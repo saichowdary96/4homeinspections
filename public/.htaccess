@@ -1,0 +1,42 @@
+# ============================================================================
+#  Apache configuration for static hosting (GoDaddy cPanel, shared hosting…)
+#  This file is copied verbatim into the exported `out/` folder at build time
+#  and should be uploaded to your web root (e.g. public_html) along with it.
+# ============================================================================
+
+# --- Custom error page -------------------------------------------------------
+ErrorDocument 404 /404.html
+
+# --- Force HTTPS (uncomment once your SSL certificate is active) -------------
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- Pretty URLs: serve /path/ -> /path/index.html ---------------------------
+# Next.js static export (trailingSlash: true) already emits folder/index.html,
+# which Apache serves automatically via DirectoryIndex.
+DirectoryIndex index.html
+
+# --- Gzip compression --------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# --- Browser caching for static assets ---------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# --- Basic security headers --------------------------------------------------
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

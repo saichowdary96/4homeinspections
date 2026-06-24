@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-brand: 15 36 68; /* brand-900 */
+    --color-accent: 249 131 7; /* accent-500 */
+  }
+
+  * {
+    @apply border-slate-200;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white text-slate-700 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-bold tracking-tight text-brand-900;
+    text-wrap: balance;
+  }
+
+  /* Respect users who prefer reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Accessible focus styles. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent-500 ring-offset-2 ring-offset-white;
+  }
+
+  ::selection {
+    @apply bg-accent-500/20 text-brand-900;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply container max-w-7xl;
+  }
+
+  /* Gradient text utility used in hero/section headings. */
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-400 to-accent-600 bg-clip-text text-transparent;
+  }
+
+  /* Subtle elevated card surface. */
+  .surface-card {
+    @apply rounded-2xl border border-slate-100 bg-white shadow-card;
+  }
+
+  /* Eyebrow / kicker label above headings. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent-700;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar but keep scroll functionality (mobile nav, marquees). */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Pause marquee animation on hover. */
+  .pause-on-hover:hover {
+    animation-play-state: paused;
+  }
+}
