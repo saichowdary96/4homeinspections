@@ -47,7 +47,7 @@ export function Hero() {
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent-300 backdrop-blur"
             >
               <Star className="h-3.5 w-3.5 fill-accent-400 text-accent-400" />
-              Rated 4.9/5 by 850+ homeowners
+             Professional Home & Building Inspections
             </motion.span>
 
             <motion.h1
