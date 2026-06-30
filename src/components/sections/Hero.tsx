@@ -115,60 +115,26 @@ export function Hero() {
               className="relative mx-auto max-w-md lg:max-w-none"
             >
               {/* Main report card */}
-              <div className="rounded-3xl border border-white/10 bg-white p-6 shadow-2xl">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-sage-100 text-sage-700">
-                      <FileCheck2 className="h-6 w-6" />
-                    </span>
-                    <div>
-                      <p className="text-sm font-bold text-brand-900">
-                        Inspection Report
-                      </p>
-                      <p className="text-xs text-slate-500">
-                        1420 Maple Street
-                      </p>
-                    </div>
-                  </div>
-                  <span className="rounded-full bg-sage-100 px-3 py-1 text-xs font-semibold text-sage-700">
-                    Ready
-                  </span>
-                </div>
+              <div className="rounded-[32px] bg-white shadow-2xl overflow-hidden">
 
-                <div className="mt-6 space-y-3">
-                  {[
-                    { label: "Roof & Exterior", status: "Good", good: true },
-                    { label: "Electrical", status: "Good", good: true },
-                    { label: "Plumbing", status: "1 minor item", good: false },
-                    { label: "HVAC", status: "Good", good: true },
-                  ].map((row) => (
-                    <div
-                      key={row.label}
-                      className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3"
-                    >
-                      <span className="text-sm font-medium text-brand-900">
-                        {row.label}
-                      </span>
-                      <span
-                        className={
-                          row.good
-                            ? "inline-flex items-center gap-1.5 text-xs font-semibold text-sage-600"
-                            : "inline-flex items-center gap-1.5 text-xs font-semibold text-accent-600"
-                        }
-                      >
-                        <span
-                          className={
-                            row.good
-                              ? "h-2 w-2 rounded-full bg-sage-500"
-                              : "h-2 w-2 rounded-full bg-accent-500"
-                          }
-                        />
-                        {row.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+  {/* Header */}
+  <div className="flex items-center justify-between border-b px-8 py-6">
+    <div className="flex items-center gap-4">
+      <div className="grid h-14 w-14 place-items-center rounded-2xl bg-orange-100">
+        <FileCheck2 className="h-7 w-7 text-orange-500" />
+      </div>
+
+      <h3 className="text-3xl font-bold text-slate-900">
+        Inspection Report
+      </h3>
+    </div>
+
+    <span className="rounded-full bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
+      ✓ Report Ready
+    </span>
+  </div>
+</div>
+              
 
               {/* Floating badges */}
               <motion.div
