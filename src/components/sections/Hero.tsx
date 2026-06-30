@@ -57,9 +57,11 @@ export function Hero() {
               animate="show"
               className="mt-6 text-4xl font-extrabold leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             >
-              Buy, sell &amp; own
-              <br />
-              with <span className="text-gradient">total confidence.</span>
+             Quality Home
+<br />
+<span className="text-gradient">
+  Building Inspections
+</span>
             </motion.h1>
 
             <motion.p
