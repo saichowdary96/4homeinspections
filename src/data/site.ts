@@ -17,7 +17,7 @@ export const siteConfig = {
   description:
 "4 Home Inspections provides professional home, apartment, villa and commercial building inspections. We deliver detailed inspection reports with photos to help buyers, owners and builders make confident decisions.",
   /** The canonical URL of your deployed site (update before going live). */
-  url: "https://4homeinspections.in",
+  url: "https://www.4homeinspections.in",
   /** Primary contact details — used across the site and in the footer. */
   contact: {
     phone: "(555) 123-4567",
