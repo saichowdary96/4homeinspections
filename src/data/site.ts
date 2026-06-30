@@ -15,7 +15,6 @@ export const siteConfig = {
  tagline: "Professional Home & Building Inspections",
   /** Longer description used for SEO meta descriptions and Open Graph. */
   description:
-   description:
 "4 Home Inspections provides professional home, apartment, villa and commercial building inspections. We deliver detailed inspection reports with photos to help buyers, owners and builders make confident decisions.",
   /** The canonical URL of your deployed site (update before going live). */
   url: "https://4homeinspections.in",
