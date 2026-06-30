@@ -146,7 +146,51 @@ export function Hero() {
     <div className="rounded-full bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
       ✓ Report Ready
     </div>
+<div className="grid grid-cols-3 divide-x divide-slate-200">
 
+  <div className="p-6">
+    <p className="text-xs uppercase tracking-wide text-slate-500">
+      Property
+    </p>
+
+    <h4 className="mt-2 text-lg font-bold text-slate-900">
+      Apartment 1204
+    </h4>
+
+    <p className="text-sm text-slate-500">
+      Hyderabad
+    </p>
+  </div>
+
+  <div className="p-6">
+    <p className="text-xs uppercase tracking-wide text-slate-500">
+      Inspection Date
+    </p>
+
+    <h4 className="mt-2 text-lg font-bold text-slate-900">
+      28 June 2026
+    </h4>
+
+    <p className="text-sm text-slate-500">
+      10:30 AM
+    </p>
+  </div>
+
+  <div className="p-6">
+    <p className="text-xs uppercase tracking-wide text-slate-500">
+      Inspector
+    </p>
+
+    <h4 className="mt-2 text-lg font-bold text-slate-900">
+      Certified Engineer
+    </h4>
+
+    <p className="text-sm text-slate-500">
+      License #HI-4587
+    </p>
+  </div>
+
+</div>
   </div>
 
 </div>
