@@ -137,10 +137,18 @@ export function Footer() {
             </h3>
             <ul className="mt-5 space-y-2 text-sm">
               {siteConfig.hours.map((h) => (
-                <li key={h.day} className="flex justify-between gap-4">
-                  <span className="text-brand-200">{h.day}</span>
-                  <span className="font-medium text-white">{h.time}</span>
-                </li>
+                <li
+  key={h.day}
+  className="grid grid-cols-[140px_1fr] items-center gap-4"
+>
+  <span className="text-brand-200">
+    {h.day}
+  </span>
+
+  <span className="font-medium text-right whitespace-nowrap text-white">
+    {h.time}
+  </span>
+</li>
               ))}
             </ul>
             <Link
