@@ -10,16 +10,15 @@
 
 export const siteConfig = {
   /** Brand / business name shown in the header, footer and metadata. */
-  name: "HomeGuard Inspections",
+  name: "4 Home Inspections",
   /** Short tagline used in heroes and the browser title template. */
-  tagline: "Inspections You Can Trust",
+ tagline: "Professional Home & Building Inspections",
   /** Longer description used for SEO meta descriptions and Open Graph. */
   description:
-    "Certified, professional home inspections for buyers, sellers and homeowners. Detailed same-day reports, honest advice, and total peace of mind.",
-
+   description:
+"4 Home Inspections provides professional home, apartment, villa and commercial building inspections. We deliver detailed inspection reports with photos to help buyers, owners and builders make confident decisions.",
   /** The canonical URL of your deployed site (update before going live). */
-  url: "https://www.homeguardinspections.com",
-
+  url: "https://4homeinspections.in",
   /** Primary contact details — used across the site and in the footer. */
   contact: {
     phone: "(555) 123-4567",
