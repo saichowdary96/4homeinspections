@@ -69,9 +69,7 @@ export function Hero() {
               animate="show"
               className="mt-6 max-w-xl text-lg leading-relaxed text-brand-100"
             >
-              {siteConfig.name} delivers thorough, honest home inspections with
-              detailed same-day reports — so you always know exactly what
-              you&rsquo;re getting before you sign.
+              {siteConfig.name} delivers thorough, unbiased property inspections with detailed same-day reports, giving you complete confidence before buying, selling or taking possession of your property.
             </motion.p>
 
             <motion.ul
