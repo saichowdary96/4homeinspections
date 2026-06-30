@@ -57,11 +57,9 @@ export function Hero() {
               animate="show"
               className="mt-6 text-4xl font-extrabold leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             >
-            Professional Home &
+            Know Your Property
 <br />
-<span className="text-gradient">
-  Building Inspections
-</span>
+<span className="text-gradient">Before You Buy</span>
             </motion.h1>
 
             <motion.p
