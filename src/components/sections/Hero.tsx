@@ -57,7 +57,7 @@ export function Hero() {
               animate="show"
               className="mt-6 text-4xl font-extrabold leading-[1.08] text-white sm:text-5xl lg:text-6xl"
             >
-             Quality Home
+            Professional Home &
 <br />
 <span className="text-gradient">
   Building Inspections
