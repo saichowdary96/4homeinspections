@@ -19,24 +19,23 @@ export const siteConfig = {
   /** The canonical URL of your deployed site (update before going live). */
   url: "https://www.4homeinspections.in",
   /** Primary contact details — used across the site and in the footer. */
-  contact: {
-    phone: "(555) 123-4567",
-    phoneHref: "tel:+15551234567",
-    email: "hello@homeguardinspections.com",
-    emailHref: "mailto:hello@homeguardinspections.com",
-    address: {
-      line1: "1420 Inspector Avenue, Suite 200",
-      line2: "Austin, TX 78701",
-      mapsQuery: "1420 Inspector Avenue, Austin, TX 78701",
-    },
+ contact: {
+  phone: "+91 8121660345",
+  phoneHref: "tel:+918121660345",
+  email: "info.4constructions@gmail.com",
+  emailHref: "mailto:info.4constructions@gmail.com",
+  address: {
+    line1: "Hyderabad",
+    line2: "Telangana, India",
+    mapsQuery: "Hyderabad, Telangana, India",
   },
+},
 
   /** Business hours displayed in the footer and contact page. */
-  hours: [
-    { day: "Monday – Friday", time: "7:00 AM – 7:00 PM" },
-    { day: "Saturday", time: "8:00 AM – 5:00 PM" },
-    { day: "Sunday", time: "By appointment" },
-  ],
+ hours: [
+  { day: "Monday - Saturday", time: "9:00 AM - 7:00 PM" },
+  { day: "Sunday", time: "By Appointment" },
+],
 
   /** Social profiles — empty strings are hidden automatically. */
   social: {
