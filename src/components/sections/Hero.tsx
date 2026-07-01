@@ -35,8 +35,8 @@ export function Hero() {
       <div className="absolute -right-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-accent-500/20 blur-3xl" />
       <div className="absolute -bottom-40 -left-40 h-[30rem] w-[30rem] rounded-full bg-brand-500/20 blur-3xl" />
 
-     <div className="container-wide relative pt-0 pb-20 lg:pt-0 lg:pb-24">
-        <div className="grid items-center gap-14 lg:grid-cols-12">
+  <div className="container-wide relative pt-4 pb-20 lg:pt-6 lg:pb-24">
+        <div className="grid items-start gap-14 lg:grid-cols-12">
           {/* Copy */}
           <div className="lg:col-span-6">
             <motion.span
@@ -115,7 +115,7 @@ export function Hero() {
               className="relative mx-auto max-w-md lg:max-w-none"
             >
               {/* Main report card */}
-              <div className="rounded-[32px] overflow-hidden border border-slate-200 bg-white shadow-2xl min-h-[850px]">
+              <div className="rounded-[32px] overflow-hidden border border-slate-200 bg-white shadow-2xl">
 
   {/* Header */}
 
