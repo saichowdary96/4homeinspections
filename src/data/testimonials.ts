@@ -8,51 +8,51 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Sarah & Mark Thompson",
-    role: "First-time Home Buyers",
+    name: "Rohit Kumar",
+    role: "Home Buyer",
     rating: 5,
-    location: "Austin, TX",
+    location: "Gachibowli, Hyderabad",
     quote:
-      "As first-time buyers we were nervous, but our inspector walked us through every detail and made us feel completely at ease. The report was incredibly thorough and we caught a roof issue that saved us thousands.",
+      "Excellent inspection service. The engineer identified plumbing and electrical issues that we had completely missed. The detailed report helped us get everything fixed by the builder before possession.",
   },
   {
-    name: "Jennifer Alvarez",
-    role: "Real Estate Agent",
+    name: "Priya Reddy",
+    role: "Apartment Owner",
     rating: 5,
-    location: "Round Rock, TX",
+    location: "Kondapur, Hyderabad",
     quote:
-      "I refer all my clients here. The reports are clear, the turnaround is fast, and they explain findings without scaring buyers away. Truly a professional partner in every transaction.",
+      "Very professional and punctual team. The inspection report included clear photographs and detailed explanations. Highly recommended before taking possession of a new apartment.",
   },
   {
-    name: "David Chen",
-    role: "Home Seller",
+    name: "Venkatesh Rao",
+    role: "Villa Buyer",
     rating: 5,
-    location: "Cedar Park, TX",
+    location: "Miyapur, Hyderabad",
     quote:
-      "The pre-listing inspection was the best money I spent. We fixed a few items up front, listed with confidence, and sold above asking with zero renegotiation. Highly recommend.",
+      "Booking was simple and the inspection was completed professionally. They found several construction defects that the builder rectified before handover. Worth every rupee.",
   },
   {
-    name: "Rachel Morrison",
-    role: "New Construction Buyer",
+    name: "Sneha Sharma",
+    role: "First-Time Home Buyer",
     rating: 5,
-    location: "Leander, TX",
+    location: "Kokapet, Hyderabad",
     quote:
-      "I almost skipped an inspection because the home was brand new. So glad I didn't — they found several issues the builder fixed before closing. Worth every penny.",
+      "As first-time buyers we wanted complete peace of mind. The inspection was thorough and easy to understand. We felt much more confident before moving into our new home.",
   },
   {
-    name: "The Patel Family",
-    role: "Annual Maintenance Client",
+    name: "Arun Kumar",
+    role: "Property Investor",
     rating: 5,
-    location: "Pflugerville, TX",
+    location: "Narsingi, Hyderabad",
     quote:
-      "We schedule an annual inspection every year now. They caught a small water leak before it became a major problem. Professional, punctual, and genuinely caring.",
+      "I've worked with several inspection companies, but 4 Home Inspections provided the most detailed report I've received. Fast turnaround and professional service from start to finish.",
   },
   {
-    name: "Tom Richardson",
-    role: "Investor",
+    name: "Lakshmi Narayan",
+    role: "Homeowner",
     rating: 5,
-    location: "Georgetown, TX",
+    location: "Tellapur, Hyderabad",
     quote:
-      "I've used a lot of inspectors for my rental properties and these folks are by far the most detailed and responsive. The online booking and digital reports make my life so much easier.",
+      "Outstanding service. The team inspected every corner of the property and explained each observation clearly. The digital report with photographs was extremely helpful.",
   },
 ];
