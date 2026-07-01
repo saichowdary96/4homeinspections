@@ -194,7 +194,6 @@ export function Hero() {
 </div>
   </div>
 
-</div>
 
               {/* Floating badges */}
               <motion.div
