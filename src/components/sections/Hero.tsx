@@ -146,6 +146,7 @@ export function Hero() {
     <div className="rounded-full bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
       ✓ Report Ready
     </div>
+    </div>
 <div className="grid grid-cols-3 divide-x divide-slate-200">
 
   <div className="p-6">
