@@ -115,7 +115,7 @@ export function Hero() {
               className="relative mx-auto max-w-md lg:max-w-none"
             >
               {/* Main report card */}
-              <div className="rounded-[32px] overflow-hidden border border-slate-200 bg-white shadow-2xl">
+              <div className="rounded-[32px] overflow-hidden border border-slate-200 bg-white shadow-2xl min-h-[850px]">
 
   {/* Header */}
 
@@ -191,6 +191,25 @@ export function Hero() {
     </p>
   </div>
 
+</div>
+<div className="border-t border-slate-200 bg-slate-50 px-8 py-5">
+  <div className="flex items-center justify-between">
+
+    <div>
+      <h4 className="text-lg font-bold text-slate-900">
+        Detailed Report with Photos & Recommendations
+      </h4>
+
+      <p className="text-sm text-slate-500">
+        Available for download
+      </p>
+    </div>
+
+    <button className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold hover:bg-white">
+      View Sample Report
+    </button>
+
+  </div>
 </div>
   </div>
 
