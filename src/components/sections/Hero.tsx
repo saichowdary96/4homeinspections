@@ -35,7 +35,7 @@ export function Hero() {
       <div className="absolute -right-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-accent-500/20 blur-3xl" />
       <div className="absolute -bottom-40 -left-40 h-[30rem] w-[30rem] rounded-full bg-brand-500/20 blur-3xl" />
 
-      <div className="container-wide relative py-20 lg:py-28">
+      <div className="container-wide relative pt-8 pb-20 lg:pt-10 lg:pb-24">
         <div className="grid items-center gap-14 lg:grid-cols-12">
           {/* Copy */}
           <div className="lg:col-span-6">
