@@ -192,6 +192,73 @@ export function Hero() {
   </div>
 
 </div>
+<div className="grid grid-cols-2 gap-6 border-t border-slate-200 p-8">
+
+  <div className="rounded-2xl border border-slate-200 p-6">
+
+    <h4 className="text-xl font-bold text-slate-900">
+      Inspection Summary
+    </h4>
+
+    <div className="mt-8 flex justify-center">
+      <div className="flex h-44 w-44 items-center justify-center rounded-full border-[12px] border-green-500">
+
+        <div className="text-center">
+          <p className="text-5xl font-bold text-slate-900">
+            96%
+          </p>
+
+          <p className="text-sm uppercase tracking-wide text-slate-500">
+            Overall Score
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div className="mt-8 rounded-xl bg-green-50 p-4 text-center">
+
+      <p className="text-sm uppercase tracking-wide text-slate-500">
+        Overall Condition
+      </p>
+
+      <p className="text-2xl font-bold text-green-700">
+        Excellent
+      </p>
+
+    </div>
+
+  </div>
+
+  <div className="rounded-2xl border border-slate-200 p-6">
+
+    <h4 className="text-xl font-bold text-slate-900">
+      Inspection Checklist
+    </h4>
+
+    <div className="mt-6 space-y-5">
+
+      <div className="flex justify-between"><span>Structure</span><span className="font-semibold text-green-600">Passed</span></div>
+
+      <div className="flex justify-between"><span>Roof</span><span className="font-semibold text-green-600">Passed</span></div>
+
+      <div className="flex justify-between"><span>Electrical</span><span className="font-semibold text-green-600">Passed</span></div>
+
+      <div className="flex justify-between"><span>Plumbing</span><span className="font-semibold text-orange-500">Minor Issue</span></div>
+
+      <div className="flex justify-between"><span>Bathrooms</span><span className="font-semibold text-green-600">Passed</span></div>
+
+      <div className="flex justify-between"><span>Kitchen</span><span className="font-semibold text-green-600">Passed</span></div>
+
+      <div className="flex justify-between"><span>Flooring</span><span className="font-semibold text-green-600">Passed</span></div>
+
+      <div className="flex justify-between"><span>Doors & Windows</span><span className="font-semibold text-green-600">Passed</span></div>
+
+    </div>
+
+  </div>
+
+</div>
 <div className="border-t border-slate-200 bg-slate-50 px-8 py-5">
   <div className="flex items-center justify-between">
 
