@@ -285,7 +285,7 @@ export function Hero() {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -left-5 -top-14 hidden rounded-2xl bg-white p-4 shadow-card sm:block"
+                className="absolute left-4 top-4 hidden rounded-2xl bg-white p-4 shadow-2xl sm:block z-20"
               >
                 <div className="flex items-center gap-3">
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent-100 text-accent-600">
