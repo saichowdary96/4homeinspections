@@ -143,9 +143,27 @@ export function Hero() {
 
     </div>
 
-    <div className="rounded-full bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
-      ✓ Report Ready
+   <div className="flex items-center gap-3">
+
+    <div className="rounded-xl bg-orange-50 px-4 py-2 shadow-md">
+        <div className="flex items-center gap-2">
+            <Clock3 className="h-5 w-5 text-orange-500" />
+            <div>
+                <p className="text-lg font-bold text-slate-900">
+                    24 hrs
+                </p>
+                <p className="text-xs text-slate-500">
+                    Report delivery
+                </p>
+            </div>
+        </div>
     </div>
+
+    <div className="rounded-full bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
+        ✓ Report Ready
+    </div>
+
+</div>
     </div>
 <div className="grid grid-cols-3 divide-x divide-slate-200">
 
@@ -282,23 +300,6 @@ export function Hero() {
 
 
               {/* Floating badges */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-               className="absolute left-4 -top-8 hidden rounded-2xl bg-white p-4 shadow-2xl sm:block z-20"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent-100 text-accent-600">
-                    <Clock3 className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="font-display text-lg font-bold leading-none text-brand-900">
-                      24 hrs
-                    </p>
-                    <p className="text-xs text-slate-500">Report delivery</p>
-                  </div>
-                </div>
-              </motion.div>
 
               <motion.div
                 animate={{ y: [0, 10, 0] }}
