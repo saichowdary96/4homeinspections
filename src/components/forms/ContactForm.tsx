@@ -10,20 +10,33 @@ type Status = "idle" | "submitting" | "success" | "error";
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("submitting");
-    const payload = Object.fromEntries(new FormData(e.currentTarget).entries());
-    // INTEGRATION POINT: POST `payload` to your form/email service.
-    try {
-      await new Promise((r) => setTimeout(r, 800));
-      // eslint-disable-next-line no-console
-      console.log("Contact message:", payload);
+ async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  setStatus("submitting");
+
+  const formData = new FormData(e.currentTarget);
+
+  formData.append("_subject", "New Home Inspection Contact Request");
+
+  try {
+    const response = await fetch("https://formspree.io/f/mjgdryqk", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (response.ok) {
       setStatus("success");
-    } catch {
+      e.currentTarget.reset();
+    } else {
       setStatus("error");
     }
+  } catch {
+    setStatus("error");
   }
+}
 
   if (status === "success") {
     return (

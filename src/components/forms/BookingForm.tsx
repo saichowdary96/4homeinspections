@@ -11,34 +11,33 @@ type Status = "idle" | "submitting" | "success" | "error";
 export function BookingForm() {
   const [status, setStatus] = useState<Status>("idle");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("submitting");
+ async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  setStatus("submitting");
 
-    const formData = new FormData(e.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
+  const formData = new FormData(e.currentTarget);
 
-    // ----------------------------------------------------------------------
-    // INTEGRATION POINT
-    // This static demo simulates a successful submission. To go live, POST
-    // `payload` to your backend, a form service (Formspree, Basin, Web3Forms),
-    // or an email/booking API. Example:
-    //
-    //   await fetch("https://your-api.com/bookings", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(payload),
-    //   });
-    // ----------------------------------------------------------------------
-    try {
-      await new Promise((r) => setTimeout(r, 900));
-      // eslint-disable-next-line no-console
-      console.log("Booking request:", payload);
+  formData.append("_subject", "New Home Inspection Booking");
+
+  try {
+    const response = await fetch("https://formspree.io/f/mjgdryqk", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (response.ok) {
       setStatus("success");
-    } catch {
+      e.currentTarget.reset();
+    } else {
       setStatus("error");
     }
+  } catch {
+    setStatus("error");
   }
+}
 
   if (status === "success") {
     return (

@@ -12,19 +12,32 @@ export function QuoteForm() {
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("submitting");
-    const payload = Object.fromEntries(new FormData(e.currentTarget).entries());
-    // INTEGRATION POINT: POST `payload` to your form/email/CRM service.
-    try {
-      await new Promise((r) => setTimeout(r, 800));
-      // eslint-disable-next-line no-console
-      console.log("Quote request:", payload);
+  e.preventDefault();
+  setStatus("submitting");
+
+  const formData = new FormData(e.currentTarget);
+
+  formData.append("_subject", "New Home Inspection Quote Request");
+
+  try {
+    const response = await fetch("https://formspree.io/f/mjgdryqk", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (response.ok) {
       setStatus("success");
-    } catch {
+      e.currentTarget.reset();
+    } else {
       setStatus("error");
     }
+  } catch {
+    setStatus("error");
   }
+}
 
   if (status === "success") {
     return (
@@ -48,7 +61,7 @@ export function QuoteForm() {
           <Input id="q-name" name="name" required placeholder="Your name" autoComplete="name" />
         </Field>
         <Field label="Phone" htmlFor="q-phone" required>
-          <Input id="q-phone" name="phone" type="tel" required placeholder="(555) 123-4567" autoComplete="tel" />
+          <Input id="q-phone" name="phone" type="tel" required placeholder="+91 98765 43210" autoComplete="tel" />
         </Field>
       </div>
       <Field label="Email" htmlFor="q-email" required>
@@ -72,7 +85,7 @@ export function QuoteForm() {
         </Field>
       </div>
       <Field label="Property address" htmlFor="q-address">
-        <Input id="q-address" name="address" placeholder="123 Main St, Austin, TX" />
+        <Input id="q-address" name="address" placeholder="Flat/Villa No, Area, Hyderabad" />
       </Field>
       <Field label="Additional details" htmlFor="q-notes">
         <Textarea id="q-notes" name="notes" placeholder="Add-ons, timing, or anything else…" />
