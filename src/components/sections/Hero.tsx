@@ -194,7 +194,96 @@ export function Hero() {
 </div>
   </div>
 
+<div className="grid grid-cols-5 gap-6 border-t border-slate-200 p-6">
 
+  {/* Score Card */}
+
+  <div className="col-span-2 rounded-2xl border border-slate-200 p-5">
+
+    <h4 className="font-bold text-slate-900">
+      Inspection Summary
+    </h4>
+
+    <div className="mt-6 flex justify-center">
+
+      <div className="flex h-40 w-40 items-center justify-center rounded-full border-[12px] border-green-500">
+
+        <div className="text-center">
+
+          <div className="text-5xl font-extrabold text-slate-900">
+            96%
+          </div>
+
+          <div className="text-xs uppercase tracking-widest text-slate-500">
+            Overall Score
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div className="mt-6 rounded-xl bg-green-50 p-4 text-center">
+
+      <p className="text-xs uppercase tracking-wider text-slate-500">
+        Overall Condition
+      </p>
+
+      <p className="text-lg font-bold text-green-700">
+        Excellent
+      </p>
+
+    </div>
+
+  </div>
+
+  {/* Checklist */}
+
+  <div className="col-span-3 rounded-2xl border border-slate-200 p-5">
+
+    <h4 className="font-bold text-slate-900">
+      Inspection Checklist
+    </h4>
+
+    <div className="mt-5 space-y-3">
+
+      {[
+        ["Structure","Passed"],
+        ["Roof","Passed"],
+        ["Electrical","Passed"],
+        ["Plumbing","Minor Issue"],
+        ["Bathrooms","Passed"],
+        ["Kitchen","Passed"],
+        ["Flooring","Passed"],
+        ["Doors & Windows","Passed"],
+      ].map(([title,status])=>(
+        <div
+          key={title}
+          className="flex items-center justify-between border-b border-slate-100 pb-3"
+        >
+          <span className="font-medium text-slate-800">
+            {title}
+          </span>
+
+          <span
+            className={
+              status==="Passed"
+                ? "font-semibold text-green-600"
+                : "font-semibold text-orange-500"
+            }
+          >
+            {status}
+          </span>
+
+        </div>
+      ))}
+
+    </div>
+
+  </div>
+
+</div>
               {/* Floating badges */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
