@@ -32,8 +32,8 @@ export const services: Service[] = [
     summary:
       "A complete top-to-bottom evaluation before you close, so you buy with confidence.",
     icon: "Home",
-    priceFrom: "$375",
-    duration: "2.5 – 3.5 hrs",
+    priceFrom: "₹4,999 / Visit",
+    duration: "Per Visit",
     featured: true,
     intro:
       "Buying a home is likely the biggest investment you'll ever make. Our comprehensive buyer's inspection examines every accessible component of the property so you know exactly what you're getting — before you sign. You'll receive a clear, photo-rich report within 24 hours, plus a walkthrough to answer every question.",
@@ -57,8 +57,8 @@ export const services: Service[] = [
     summary:
       "Find and fix issues before listing to sell faster and avoid renegotiations.",
     icon: "Tag",
-    priceFrom: "$350",
-    duration: "2.5 – 3.5 hrs",
+    priceFrom: "₹4,499 / Visit",
+    duration: "Per Visit",
     featured: true,
     intro:
       "A pre-listing inspection puts you in the driver's seat. By identifying issues before your home hits the market, you can make repairs on your own terms, price accurately, and reduce the risk of last-minute buyer renegotiations or deal-killing surprises.",
@@ -78,8 +78,8 @@ export const services: Service[] = [
     summary:
       "Independent verification that your brand-new home was built to standard.",
     icon: "HardHat",
-    priceFrom: "$425",
-    duration: "3 – 4 hrs",
+    priceFrom: "₹5,999 / Visit",
+    duration: "Per Visit",
     featured: true,
     intro:
       "New doesn't always mean flawless. Builders work fast and oversights happen. Our new construction inspection — ideally completed before your final walkthrough — gives you an unbiased, third-party review so the builder addresses defects before you take ownership.",
@@ -99,8 +99,8 @@ export const services: Service[] = [
     summary:
       "Catch small problems early and protect your home's value year after year.",
     icon: "CalendarCheck",
-    priceFrom: "$295",
-    duration: "2 – 3 hrs",
+    priceFrom: "₹3,999 / Visit",
+    duration: "Per Visit",
     intro:
       "Your home is constantly aging. An annual maintenance inspection helps you stay ahead of costly repairs by identifying wear, leaks, safety concerns and deferred maintenance early — when they're small and inexpensive to fix.",
     includes: [
@@ -119,8 +119,8 @@ export const services: Service[] = [
     summary:
       "Certified testing for the #1 cause of lung cancer in non-smokers.",
     icon: "Wind",
-    priceFrom: "$150",
-    duration: "48 hr test",
+    priceFrom: "₹2,999 / Visit",
+    duration: "Per Visit",
     intro:
       "Radon is an invisible, odorless radioactive gas and the leading cause of lung cancer among non-smokers. Our certified continuous radon monitors provide accurate, EPA-protocol testing so you know your home's air is safe to breathe.",
     includes: [
@@ -138,8 +138,8 @@ export const services: Service[] = [
     summary:
       "See what the naked eye can't — hidden leaks, heat loss and electrical hot spots.",
     icon: "Thermometer",
-    priceFrom: "$125",
-    duration: "Add-on",
+    priceFrom: "₹3,999 / Visit",
+    duration: "Per Visit",
     intro:
       "Using professional-grade infrared cameras, we detect issues invisible during a standard visual inspection: moisture intrusion behind walls, missing insulation, overheating electrical components and energy-loss areas — giving you a deeper layer of protection.",
     includes: [
