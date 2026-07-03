@@ -10,44 +10,80 @@ type Status = "idle" | "submitting" | "success" | "error";
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
 
- async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-  e.preventDefault();
-  setStatus("submitting");
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-  const formData = new FormData(e.currentTarget);
+    if (status === "submitting") return;
 
-  formData.append("_subject", "New Home Inspection Contact Request");
+    setStatus("submitting");
 
-  try {
-    const response = await fetch("https://formspree.io/f/mjgdryqk", {
-      method: "POST",
-      body: formData,
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    const formData = new FormData(e.currentTarget);
 
-    if (response.ok) {
+    formData.append("_subject", "New Contact Enquiry");
+    formData.append("website", "4 Home Inspections");
+    formData.append("form_type", "Contact Form");
+    formData.append(
+      "submitted_at",
+      new Date().toLocaleString("en-IN", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    );
+
+    try {
+      const response = await fetch(
+        "https://formspree.io/f/mjgdryqk",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Submission failed");
+      }
+            e.currentTarget.reset();
       setStatus("success");
-      e.currentTarget.reset();
-    } else {
+    } catch (error) {
+      console.error("Contact Form Error:", error);
       setStatus("error");
     }
-  } catch {
-    setStatus("error");
   }
-}
 
   if (status === "success") {
     return (
-      <div className="rounded-2xl border border-sage-200 bg-sage-50 p-8 text-center">
-        <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-sage-500 text-white">
+      <div className="rounded-2xl border border-green-200 bg-green-50 p-8 text-center">
+        <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-green-600 text-white">
           <CheckCircle2 className="h-7 w-7" />
         </div>
-        <h3 className="text-xl font-bold text-brand-900">Message sent!</h3>
-        <p className="mx-auto mt-2 max-w-md text-sm text-slate-600">
-          Thanks for reaching out. We&rsquo;ll get back to you shortly.
+
+        <h3 className="text-2xl font-bold text-green-800">
+          Message Sent Successfully!
+        </h3>
+
+        <p className="mt-3 text-slate-700">
+          Thank you for contacting <strong>4 Home Inspections</strong>.
         </p>
+
+        <p className="mt-2 text-slate-600">
+          One of our team members will get back to you as soon as possible.
+        </p>
+
+        <div className="mt-6 space-y-2 text-sm text-slate-700">
+          <p>📞 +91 81216 60345</p>
+          <p>📧 info.4constructions@gmail.com</p>
+        </div>
+
+        <Button
+          className="mt-8"
+          variant="outline"
+          onClick={() => setStatus("idle")}
+        >
+          Send Another Message
+        </Button>
       </div>
     );
   }
@@ -55,35 +91,87 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Name" htmlFor="c-name" required>
-          <Input id="c-name" name="name" required placeholder="Your name" autoComplete="name" />
+                <Field label="Full Name" htmlFor="c-name" required>
+          <Input
+            id="c-name"
+            name="name"
+            required
+            placeholder="Rohit Kumar"
+            autoComplete="name"
+          />
         </Field>
-        <Field label="Email" htmlFor="c-email" required>
-          <Input id="c-email" name="email" type="email" required placeholder="you@email.com" autoComplete="email" />
+
+        <Field label="Email Address" htmlFor="c-email" required>
+          <Input
+            id="c-email"
+            name="email"
+            type="email"
+            required
+            placeholder="info@example.com"
+            autoComplete="email"
+          />
         </Field>
       </div>
-      <Field label="Phone" htmlFor="c-phone">
-        <Input id="c-phone" name="phone" type="tel" placeholder="(555) 123-4567" autoComplete="tel" />
+
+      <Field label="Mobile Number" htmlFor="c-phone" required>
+        <Input
+          id="c-phone"
+          name="phone"
+          type="tel"
+          required
+          placeholder="+91 98765 43210"
+          autoComplete="tel"
+        />
       </Field>
-      <Field label="How can we help?" htmlFor="c-message" required>
-        <Textarea id="c-message" name="message" required placeholder="Tell us a bit about what you need…" />
+
+      <Field
+        label="How can we help you?"
+        htmlFor="c-message"
+        required
+      >
+        <Textarea
+          id="c-message"
+          name="message"
+          required
+          placeholder="Please tell us about your inspection requirements, property details or any questions you have."
+        />
       </Field>
 
       {status === "error" && (
-        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-          Something went wrong. Please try again or call us directly.
-        </p>
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                    <p className="text-sm font-medium text-red-700">
+            Unable to send your message.
+          </p>
+
+          <p className="mt-1 text-sm text-red-600">
+            Please try again in a few minutes or contact us directly at
+            <strong> +91 81216 60345</strong>.
+          </p>
+        </div>
       )}
 
-      <Button type="submit" size="lg" className="w-full" disabled={status === "submitting"}>
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full"
+        disabled={status === "submitting"}
+      >
         {status === "submitting" ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" /> Sending…
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Sending Message...
           </>
         ) : (
           "Send Message"
         )}
       </Button>
+
+      <p className="text-center text-xs text-slate-500">
+        By submitting this form, you agree to be contacted by
+        <strong> 4 Home Inspections</strong> regarding your enquiry.
+        Your information is kept confidential and will never be shared with
+        third parties.
+      </p>
     </form>
   );
 }
