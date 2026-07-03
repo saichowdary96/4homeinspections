@@ -50,7 +50,9 @@ try {
         <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-sage-500 text-white">
           <CheckCircle2 className="h-7 w-7" />
         </div>
-        <h3 className="text-xl font-bold text-brand-900">Request received!</h3>
+       <h3 className="text-xl font-bold text-brand-900">
+  SUCCESS FROM BOOKINGFORM
+</h3>
         <p className="mx-auto mt-2 max-w-md text-sm text-slate-600">
           Thank you for choosing us. Our team will confirm your inspection
           appointment within a few business hours. Keep an eye on your inbox and
