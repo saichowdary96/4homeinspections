@@ -66,7 +66,7 @@ export function BookingForm() {
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Full name" htmlFor="name" required>
-          <Input id="name" name="name" required placeholder="Jane Doe" autoComplete="name" />
+          <Input id="name" name="name" required placeholder="rohith kumar" autoComplete="name" />
         </Field>
         <Field label="Phone" htmlFor="phone" required>
           <Input
