@@ -74,7 +74,7 @@ export function BookingForm() {
             name="phone"
             type="tel"
             required
-            placeholder="(555) 123-4567"
+            placeholder="+91 98765 43210"
             autoComplete="tel"
           />
         </Field>
@@ -87,7 +87,7 @@ export function BookingForm() {
             name="email"
             type="email"
             required
-            placeholder="jane@email.com"
+            placeholder="info@example.com"
             autoComplete="email"
           />
         </Field>
@@ -110,7 +110,7 @@ export function BookingForm() {
           id="address"
           name="address"
           required
-          placeholder="123 Main St, Austin, TX 78701"
+          placeholder="Flat No. 101, Kondapur, Hyderabad"
         />
       </Field>
 
