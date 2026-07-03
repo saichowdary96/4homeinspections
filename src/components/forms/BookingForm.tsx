@@ -28,12 +28,14 @@ export function BookingForm() {
       },
     });
 
-    if (response.ok) {
-      setStatus("success");
-      e.currentTarget.reset();
-    } else {
-      setStatus("error");
-    }
+   if (response.ok) {
+  alert("SUCCESS");
+  setStatus("success");
+  e.currentTarget.reset();
+} else {
+  alert("ERROR");
+  setStatus("error");
+}
   } catch {
     setStatus("error");
   }
