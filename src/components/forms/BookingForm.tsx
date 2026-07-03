@@ -19,26 +19,29 @@ export function BookingForm() {
 
   formData.append("_subject", "New Home Inspection Booking");
 
-  try {
-    const response = await fetch("https://formspree.io/f/mjgdryqk", {
-      method: "POST",
-      body: formData,
-      headers: {
-        Accept: "application/json",
-      },
-    });
+try {
+  const response = await fetch("https://formspree.io/f/mjgdryqk", {
+    method: "POST",
+    body: formData,
+    headers: {
+      Accept: "application/json",
+    },
+  });
 
-console.log("Status:", response.status);
-console.log("OK:", response.ok);
+  console.log("Status:", response.status);
+  console.log("OK:", response.ok);
 
-const data = await response.json();
-console.log("Response:", data);
-
-setStatus("success");
-e.currentTarget.reset();
-  } catch {
-    setStatus("error");
+  if (!response.ok) {
+    throw new Error("Submission failed");
   }
+
+  setStatus("success");
+  e.currentTarget.reset();
+
+} catch (err) {
+  console.error(err);
+  setStatus("error");
+}
 }
 
   if (status === "success") {
