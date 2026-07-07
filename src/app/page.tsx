@@ -1,6 +1,7 @@
 import { Hero } from "@/components/sections/Hero";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { ServicesPreview } from "@/components/sections/ServicesPreview";
+import { ServiceAreasSection } from "@/components/sections/ServiceAreasSection";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { StatsSection } from "@/components/sections/StatsSection";
@@ -11,10 +12,11 @@ import { CtaSection } from "@/components/sections/CtaSection";
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <TrustBar />
-      <ServicesPreview />
-      <WhyChooseUs />
+     <Hero />
+<TrustBar />
+<ServicesPreview />
+<ServiceAreasSection />
+<WhyChooseUs />
       <ProcessSection />
       <StatsSection />
       <TestimonialsSection limit={3} />
