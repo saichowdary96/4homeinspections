@@ -41,6 +41,10 @@ export function Footer() {
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-brand-200">
               {siteConfig.description}
             </p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-brand-300">
+  Serving Hyderabad, Vijayawada and Visakhapatnam with trusted home,
+  apartment, villa and commercial building inspection services.
+</p>
 
             <ul className="mt-6 space-y-3 text-sm">
               <li>
@@ -95,7 +99,7 @@ export function Footer() {
           {/* Navigation */}
           <div className="lg:col-span-2">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
-              Explore
+              Quick Links
             </h3>
             <ul className="mt-5 space-y-3 text-sm">
               {mainNav.map((item) => (
