@@ -17,7 +17,8 @@ export function ContactForm() {
 
     setStatus("submitting");
 
-    const formData = new FormData(e.currentTarget);
+   const form = e.currentTarget;
+const formData = new FormData(form);
 
     formData.append("_subject", "New Contact Enquiry");
     formData.append("website", "4 Home Inspections");
@@ -45,7 +46,7 @@ export function ContactForm() {
       if (!response.ok) {
         throw new Error("Submission failed");
       }
-            e.currentTarget.reset();
+           form.reset();
       setStatus("success");
     } catch (error) {
       console.error("Contact Form Error:", error);
