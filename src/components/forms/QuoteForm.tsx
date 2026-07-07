@@ -18,7 +18,8 @@ export function QuoteForm() {
 
     setStatus("submitting");
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+const formData = new FormData(form);
 
     formData.append("_subject", "New Quote Request");
     formData.append("website", "4 Home Inspections");
@@ -46,7 +47,7 @@ export function QuoteForm() {
       if (!response.ok) {
         throw new Error("Submission failed");
       }
-            e.currentTarget.reset();
+            form.reset();
       setStatus("success");
     } catch (error) {
       console.error("Quote Form Error:", error);
