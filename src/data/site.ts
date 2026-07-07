@@ -26,7 +26,7 @@ export const siteConfig = {
   emailHref: "mailto:info.4constructions@gmail.com",
   address: {
     line1: "Hyderabad , Telangana",
-    line2:"Hyderabad • Vijayawada • Visakhapatnam"
+    line2:"Hyderabad • Vijayawada • Visakhapatnam",
     mapsQuery: "Hyderabad, Telangana, India",
   },
 },
