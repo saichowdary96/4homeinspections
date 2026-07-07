@@ -49,6 +49,8 @@ export function BookingForm() {
       console.log("Status:", response.status);
       console.log("OK:", response.ok);
          if (!response.ok) {
+  const errorText = await response.text();
+  console.log("Formspree Error:", errorText);
   throw new Error("Submission failed");
 }
 
