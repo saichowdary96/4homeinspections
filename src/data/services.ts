@@ -114,25 +114,6 @@ export const services: Service[] = [
     bestFor: "Current homeowners protecting their long-term investment.",
   },
   {
-    slug: "radon-testing",
-    title: "Radon Testing",
-    summary:
-      "Certified testing for the #1 cause of lung cancer in non-smokers.",
-    icon: "Wind",
-    priceFrom: "₹2,999 / Visit",
-    duration: "Per Visit",
-    intro:
-      "Radon is an invisible, odorless radioactive gas and the leading cause of lung cancer among non-smokers. Our certified continuous radon monitors provide accurate, EPA-protocol testing so you know your home's air is safe to breathe.",
-    includes: [
-      "EPA-protocol continuous monitoring",
-      "Certified placement & retrieval",
-      "Lab-grade accurate results",
-      "Clear pass/fail interpretation",
-      "Mitigation guidance if needed",
-    ],
-    bestFor: "Any buyer or homeowner concerned about indoor air quality.",
-  },
-  {
     slug: "thermal-imaging",
     title: "Thermal Imaging & Moisture",
     summary:
