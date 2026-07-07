@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     "buyer inspection",
     "pre-listing inspection",
     "new construction inspection",
-    "radon testing",
     "thermal imaging",
   ],
   authors: [{ name: siteConfig.name }],
