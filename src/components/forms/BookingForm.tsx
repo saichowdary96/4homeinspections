@@ -36,7 +36,7 @@ export function BookingForm() {
 
     try {
       const response = await fetch(
-        "https://formspree.io/f/mjgdryqk",
+        "https://formspree.io/f/maqgkanb",
         {
           method: "POST",
           body: formData,
