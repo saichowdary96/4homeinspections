@@ -18,7 +18,10 @@ export function BookingForm() {
 
     setStatus("submitting");
 
-    const formData = new FormData(e.currentTarget);
+    // Store form reference BEFORE await
+    const form = e.currentTarget;
+
+    const formData = new FormData(form);
 
     formData.append("_subject", "New Home Inspection Booking");
     formData.append("website", "4 Home Inspections");
@@ -43,11 +46,17 @@ export function BookingForm() {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Submission failed");
-      }
-            e.currentTarget.reset();
-      setStatus("success");
+      console.log("Status:", response.status);
+      console.log("OK:", response.ok);
+         if (!response.ok) {
+  throw new Error("Submission failed");
+}
+
+// Reset the form safely
+form.reset();
+
+// Show success message
+setStatus("success");
     } catch (error) {
       console.error("Booking Form Error:", error);
       setStatus("error");
@@ -70,16 +79,15 @@ export function BookingForm() {
         </p>
 
         <p className="mt-2 text-slate-600">
-          Our inspection team will contact you shortly to confirm your
-          appointment.
+          Our team has received your booking request and will contact you shortly
+          to confirm your inspection schedule.
         </p>
 
         <div className="mt-6 space-y-2 text-sm text-slate-700">
           <p>📞 +91 81216 60345</p>
           <p>📧 info.4constructions@gmail.com</p>
         </div>
-
-        <Button
+                <Button
           className="mt-8"
           variant="outline"
           onClick={() => setStatus("idle")}
@@ -93,7 +101,7 @@ export function BookingForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div className="grid gap-5 sm:grid-cols-2">
-                <Field label="Full Name" htmlFor="name" required>
+        <Field label="Full Name" htmlFor="name" required>
           <Input
             id="name"
             name="name"
@@ -128,8 +136,13 @@ export function BookingForm() {
         </Field>
 
         <Field label="Inspection Service" htmlFor="service" required>
-          <Select id="service" name="service" required defaultValue="">
-            <option value="" disabled>
+          <Select
+            id="service"
+            name="service"
+            required
+            defaultValue=""
+          >
+                        <option value="" disabled>
               Select Inspection Service
             </option>
 
@@ -143,7 +156,7 @@ export function BookingForm() {
       </div>
 
       <Field label="Property Address" htmlFor="address" required>
-                <Input
+        <Input
           id="address"
           name="address"
           required
@@ -161,10 +174,15 @@ export function BookingForm() {
         </Field>
 
         <Field label="Preferred Time" htmlFor="time">
-          <Select id="time" name="time" defaultValue="">
+          <Select
+            id="time"
+            name="time"
+            defaultValue=""
+          >
             <option value="" disabled>
               Select Preferred Time
             </option>
+
             <option>Morning (8:00 AM - 12:00 PM)</option>
             <option>Afternoon (12:00 PM - 4:00 PM)</option>
             <option>Evening (4:00 PM - 7:00 PM)</option>
@@ -173,7 +191,7 @@ export function BookingForm() {
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field
+                <Field
           label="Approx. Built-up Area (Sq.ft)"
           htmlFor="sqft"
           hint="Helps us estimate inspection duration"
@@ -198,7 +216,8 @@ export function BookingForm() {
           />
         </Field>
       </div>
-            <Field label="Additional Information" htmlFor="notes">
+
+      <Field label="Additional Information" htmlFor="notes">
         <Textarea
           id="notes"
           name="notes"
@@ -211,6 +230,7 @@ export function BookingForm() {
           <p className="text-sm font-medium text-red-700">
             Unable to submit your request.
           </p>
+
           <p className="mt-1 text-sm text-red-600">
             Please try again in a few minutes or contact us directly at
             <strong> +91 81216 60345</strong>.
