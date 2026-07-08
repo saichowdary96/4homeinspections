@@ -6,8 +6,9 @@ import { blogPosts } from "@/data/blog";
 /** Generates sitemap.xml at build time for better search indexing. */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url.replace(/\/$/, "");
-const lastModified = new Date();
-  const staticRoutes = [
+  const lastModified = new Date();
+
+  const staticRoutes: MetadataRoute.Sitemap = [
     "",
     "/about",
     "/inspector",
@@ -24,24 +25,21 @@ const lastModified = new Date();
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified,
-    changeFrequency:
-  path === ""
-    ? ("weekly" as const)
-    : ("monthly" as const),
-priority: path === "" ? 1 : 0.7,
+    changeFrequency: path === "" ? "weekly" : "monthly",
+    priority: path === "" ? 1 : 0.7,
   }));
 
-  const serviceRoutes = services.map((s) => ({
+  const serviceRoutes: MetadataRoute.Sitemap = services.map((s) => ({
     url: `${base}/services/${s.slug}`,
     lastModified,
-    changeFrequency: "monthly" as const,
+    changeFrequency: "monthly",
     priority: 0.9,
   }));
 
-  const blogRoutes = blogPosts.map((p) => ({
+  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((p) => ({
     url: `${base}/blog/${p.slug}`,
     lastModified: new Date(p.date),
-    changeFrequency: "yearly" as const,
+    changeFrequency: "yearly",
     priority: 0.5,
   }));
 
