@@ -301,23 +301,7 @@ export function Hero() {
 
               {/* Floating badges */}
 
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-14 -right-5 hidden rounded-2xl bg-white p-4 shadow-card sm:block"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-100 text-brand-700">
-                    <ShieldCheck className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="font-display text-lg font-bold leading-none text-brand-900">
-                      Certified
-                    </p>
-                    <p className="text-xs text-slate-500">InterNACHI® &amp; ASHI</p>
-                  </div>
-                </div>
-              </motion.div>
+              
             </motion.div>
           </div>
         </div>
