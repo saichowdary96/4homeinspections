@@ -24,7 +24,10 @@ const lastModified = new Date();
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified,
-    changeFrequency: path === "" ? "weekly" : "monthly",
+    changeFrequency:
+  path === ""
+    ? ("weekly" as const)
+    : ("monthly" as const),
 priority: path === "" ? 1 : 0.7,
   }));
 
