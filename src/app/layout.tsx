@@ -27,13 +27,21 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "home inspection",
-    "home inspector",
-    "buyer inspection",
-    "pre-listing inspection",
-    "new construction inspection",
-    "thermal imaging",
-  ],
+  "Home Inspection Hyderabad",
+  "Property Inspection Hyderabad",
+  "Apartment Inspection Hyderabad",
+  "Flat Inspection Hyderabad",
+  "Villa Inspection Hyderabad",
+  "Building Inspection Hyderabad",
+  "Commercial Property Inspection",
+  "Pre Possession Inspection",
+  "Snagging Inspection",
+  "Thermal Imaging Inspection",
+  "Home Inspector Hyderabad",
+  "Property Inspection Vijayawada",
+  "Property Inspection Vizag",
+  "4 Home Inspections",
+],
   authors: [{ name: siteConfig.name }],
   openGraph: {
     type: "website",
@@ -48,16 +56,29 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
   },
-  robots: {
+  icons: {
+  icon: "/favicon.ico",
+  shortcut: "/favicon.ico",
+  apple: "/favicon.ico",
+},
+  category: "Home Inspection",
+ robots: {
+  index: true,
+  follow: true,
+  googleBot: {
     index: true,
     follow: true,
+    "max-video-preview": -1,
+    "max-image-preview": "large",
+    "max-snippet": -1,
   },
+},
 };
 
 /** LocalBusiness structured data improves local SEO and rich results. */
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
+  "@type": "ProfessionalService",
   name: siteConfig.name,
   description: siteConfig.description,
   url: siteConfig.url,
@@ -68,6 +89,12 @@ const jsonLd = {
     streetAddress: siteConfig.contact.address.line1,
     addressLocality: siteConfig.contact.address.line2,
   },
+  areaServed: [
+  "Hyderabad",
+  "Vijayawada",
+  "Visakhapatnam",
+],
+  priceRange: "₹₹",
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: "4.9",
