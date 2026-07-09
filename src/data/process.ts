@@ -46,12 +46,7 @@ export type Benefit = {
 };
 
 export const benefits: Benefit[] = [
-  {
-    title: "Certified & Insured",
-    description:
-      "Fully licensed, insured and certified by InterNACHI® and ASHI for your complete protection.",
-    icon: "BadgeCheck",
-  },
+  
   {
     title: "Same-Day Reports",
     description:
