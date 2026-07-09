@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingCta } from "@/components/layout/FloatingCta";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { siteConfig } from "@/data/site";
 
 const inter = Inter({
@@ -120,7 +121,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </body>
-    </html>
+           <GoogleAnalytics gaId="G-7PT1EVQDCR" />
+    </body>
+  </html>
   );
 }
