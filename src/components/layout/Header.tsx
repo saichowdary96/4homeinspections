@@ -48,7 +48,7 @@ export function Header() {
               {siteConfig.hours[0].day}: {siteConfig.hours[0].time}
             </span>
             <span className="text-brand-300">
-              Serving {siteConfig.contact.address.line2}
+              <span>Serving Hyderabad • Vijayawada • Visakhapatnam</span>
             </span>
           </div>
           <a
