@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { FloatingCta } from "@/components/layout/FloatingCta";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { siteConfig } from "@/data/site";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
