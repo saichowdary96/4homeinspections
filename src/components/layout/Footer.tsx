@@ -68,16 +68,31 @@ export function Footer() {
               <li className="inline-flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
                 <span>
-  <span className="font-semibold text-white">Head Office</span>
-  <br />
-  Hyderabad, Telangana
+ <span className="font-semibold text-white">Head Office</span>
+<br />
+Arrna Heights, 1st Floor
+<br />
+NFC Road
+<br />
+Opp. Krishna Nagar
+<br />
+Road No. 7
+<br />
+Moula Ali
+<br />
+Hyderabad, Telangana
 
-  <br />
-  <br />
+<br />
+<br />
 
-  <span className="font-semibold text-white">Currently Serving</span>
-  <br />
-  Hyderabad • Vijayawada • Visakhapatnam
+<span className="font-semibold text-white">Currently Serving</span>
+<br />
+Hyderabad • Vijayawada • Visakhapatnam
+
+<br />
+<span className="font-semibold text-white">Expanding Soon</span>
+<br />
+Bengaluru • Chennai
 </span>
               </li>
             </ul>
