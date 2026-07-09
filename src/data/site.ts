@@ -25,10 +25,11 @@ export const siteConfig = {
   email: "info.4constructions@gmail.com",
   emailHref: "mailto:info.4constructions@gmail.com",
   address: {
-    line1: "Hyderabad , Telangana",
-    line2:"Hyderabad • Vijayawada • Visakhapatnam",
-    mapsQuery: "Hyderabad, Telangana, India",
-  },
+  line1: "Arrna Heights, 1st Floor",
+  line2: "NFC Road, Opp. Krishna Nagar, Road No. 7, Moula Ali, Hyderabad",
+  mapsQuery:
+    "Arrna Heights, 1st Floor, NFC Road, Opp. Krishna Nagar, Road No. 7, Moula Ali, Hyderabad, Telangana",
+},
 },
 
   /** Business hours displayed in the footer and contact page. */
