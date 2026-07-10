@@ -121,7 +121,20 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-           <GoogleAnalytics gaId="G-7PT1EVQDCR" />
+           <Script
+  src="https://www.googletagmanager.com/gtag/js?id=G-7PT1EVQDCR"
+  strategy="afterInteractive"
+/>
+
+<Script id="google-analytics" strategy="afterInteractive">
+  {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7PT1EVQDCR');
+  `}
+</Script>
     </body>
   </html>
   );
