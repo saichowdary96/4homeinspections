@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { BadgeCheck, GraduationCap, Briefcase, Award } from "lucide-react";
+import { GraduationCap, Briefcase, Award } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { CtaSection } from "@/components/sections/CtaSection";
-import { siteConfig } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Meet Your Inspector",
@@ -88,24 +87,7 @@ export default function InspectorPage() {
               </div>
             </Reveal>
 
-            <Reveal className="mt-10">
-              <h3 className="text-xl font-bold text-brand-900">
-                Certifications &amp; Affiliations
-              </h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {siteConfig.certifications.map((cert) => (
-                  <div
-                    key={cert}
-                    className="flex items-center gap-3 rounded-xl border border-slate-100 bg-white px-5 py-4 shadow-soft"
-                  >
-                    <BadgeCheck className="h-5 w-5 shrink-0 text-sage-600" />
-                    <span className="text-sm font-medium text-brand-900">
-                      {cert}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
+           
           </div>
         </div>
       </Section>
