@@ -7,25 +7,23 @@ import { Button } from "@/components/ui/Button";
 import { CtaSection } from "@/components/sections/CtaSection";
 
 export const metadata: Metadata = {
-  title: "Meet Your Inspector",
-  description:
-    "Get to know your certified, experienced home inspector — credentials, experience, and a genuine commitment to your peace of mind.",
+  title: "About 4 Home Inspections",
+ description:
+  "Learn about 4 Home Inspections, our services, inspection process and commitment to delivering professional property inspection reports.",
 };
 
 const inspector = {
-  name: "Michael Reed",
-  title: "Lead Inspector & Founder",
-  initials: "MR",
+  name: "4 Home Inspections",
+  title: "Professional Home & Building Inspection Services",
+  initials: "4H",
   bio: [
-    "Michael founded the company after more than a decade in residential construction, where he saw firsthand how often costly defects went unnoticed. Determined to give buyers an honest advocate, he became a certified inspector and never looked back.",
-    "He has personally inspected thousands of homes and holds advanced certifications in radon measurement and infrared thermography. Clients consistently praise his patience, clarity, and genuine care.",
-    "When he's not on a roof or in a crawlspace, Michael enjoys mentoring new inspectors and volunteering with local first-time homebuyer programs.",
+    "4 Home Inspections provides professional home, apartment, villa and commercial property inspection services across Hyderabad, Vijayawada and Visakhapatnam.",
+    "Our mission is to help home buyers, property owners and investors make informed decisions through detailed inspections and easy-to-understand digital reports.",
+    "Every inspection is carried out with modern tools, attention to detail and complete transparency, giving our clients confidence before they buy or take possession of their property.",
   ],
   highlights: [
-    { icon: Briefcase, label: "12+ years inspecting" },
-    { icon: GraduationCap, label: "Construction background" },
-    { icon: Award, label: "5,000+ five-star reviews" },
-    { icon: BadgeCheck, label: "Fully licensed & insured" },
+    { icon: GraduationCap, label: "Professional Home Inspection" },
+    { icon: Award, label: "Detailed Digital Reports" },
   ],
 };
 
@@ -34,8 +32,8 @@ export default function InspectorPage() {
     <>
       <PageHeader
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Inspector" }]}
-        title="Meet your inspector"
-        description="Experience, certifications and a genuine commitment to your peace of mind — the person behind every thorough report."
+       title="About 4 Home Inspections"
+        description="Professional home and building inspection services helping buyers and owners make informed property decisions."
       />
 
       <Section>
@@ -67,7 +65,7 @@ export default function InspectorPage() {
               </ul>
               <div className="p-6">
                 <Button href="/book" className="w-full">
-                  Book With {inspector.name.split(" ")[0]}
+                  Book an Inspection
                 </Button>
               </div>
             </div>
@@ -78,7 +76,7 @@ export default function InspectorPage() {
             <Reveal>
               <span className="eyebrow mb-4">Biography</span>
               <h2 className="text-3xl sm:text-4xl">
-                A trusted advocate in your corner
+               Professional Home Inspection Services You Can Trust
               </h2>
               <div className="mt-6 space-y-4 text-slate-600">
                 {inspector.bio.map((p, i) => (
