@@ -5,7 +5,7 @@ export function StatsSection() {
   return (
     <section className="bg-brand-900">
       <div className="container-wide py-14">
-        <dl className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+        <dl className="mx-auto grid max-w-5xl grid-cols-1 gap-10 sm:grid-cols-3">
           {siteConfig.stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 0.08} className="text-center">
               <dt className="sr-only">{stat.label}</dt>
