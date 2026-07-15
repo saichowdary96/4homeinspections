@@ -48,22 +48,14 @@ export const siteConfig = {
   },
 
   /** Headline credibility stats shown on the homepage and About page. */
-  stats: [
-    { value: "12+", label: "Years of Experience" },
-    { value: "8,500+", label: "Homes Inspected" },
-    { value: "4.9/5", label: "Average Rating" },
-    { value: "24hr", label: "Report Turnaround" },
-  ],
+ stats: [
+  { value: "1,200+", label: "Homes Inspected" },
+  { value: "4.9/5", label: "Average Rating" },
+  { value: "24hr", label: "Report Turnaround" },
+],
 
   /** Professional certifications / affiliations (logos optional). */
-  certifications: [
-    "InterNACHI® Certified",
-    "ASHI Member",
-    "TREC Licensed #12345",
-    "Licensed & Insured",
-    "Radon Certified",
-    "Thermal Imaging Certified",
-  ],
+
 };
 
 /** Primary navigation used by the header and mobile menu. */
