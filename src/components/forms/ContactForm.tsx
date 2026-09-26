@@ -47,6 +47,17 @@ const formData = new FormData(form);
         throw new Error("Submission failed");
       }
            form.reset();
+
+if (typeof window !== "undefined") {
+  const gtag = (window as typeof window & {
+    gtag?: (...args: unknown[]) => void;
+  }).gtag;
+
+  if (gtag) {
+    gtag("event", "generate_lead");
+  }
+}
+
       setStatus("success");
     } catch (error) {
       console.error("Contact Form Error:", error);
