@@ -16,6 +16,10 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # One of the linked Netlify sites still has the Next.js build plugin installed
+  # from the dashboard. A dashboard-installed plugin cannot be removed here, but
+  # this flag makes it skip instead of aborting when it finds no Next.js app.
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
 
 # Long-lived caching for the hashed asset, but always revalidate the HTML so
 # visitors pick up new deploys immediately.
