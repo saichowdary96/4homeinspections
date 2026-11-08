@@ -1,5 +1,11 @@
 /* Procedural PBR textures & decals (canvas-generated, no external assets) */
-import * as THREE from 'three';
+// three.js is injected rather than imported so this module can also run inside the
+// texture worker, which has no DOM and must not pull three.js into its bundle.
+let T = null;
+export function setThree(t){ T = t; }
+// In raster mode (the worker) build() returns plain typed arrays instead of textures.
+let RAW = false;
+export function setRaw(v){ RAW = v; }
 
 let SEED = 1337;
 export function rnd(){ SEED = (SEED * 16807) % 2147483647; return (SEED - 1) / 2147483646; }
@@ -22,7 +28,18 @@ const hex = h => [(h >> 16 & 255) / 255, (h >> 8 & 255) / 255, (h & 255) / 255];
 /* generic per-pixel texture builder: fn(u,v) -> [r,g,b,height,rough,alpha?] */
 let TEX_SCALE = 1;
 export function setTexScale(s){ TEX_SCALE = s; }
+export function getTexScale(){ return TEX_SCALE; }
+// Rasters produced by the worker, and the textures already made from them.
+const RAWCACHE = new Map(), TEXCACHE = new Map();
+export const keyOf = (name, args) => name + ':' + JSON.stringify(args);
+let CURKEY = null;
 export function build(size, fn, {normal = 0, rough = true, alpha = false, wrap = true} = {}){
+  const key = CURKEY; CURKEY = null;
+  if (key && !RAW){
+    const done = TEXCACHE.get(key); if (done) return done;
+    const raw = RAWCACHE.get(key);
+    if (raw){ RAWCACHE.delete(key); const out = fromRaster(raw); TEXCACHE.set(key, out); return out; }
+  }
   size = Math.max(96, Math.round(size * TEX_SCALE / 8) * 8);
   const W = size, H = size, n = W * H;
   const col = new Uint8ClampedArray(n * 4), hgt = new Float32Array(n), rgh = new Uint8ClampedArray(n * 4);
@@ -32,9 +49,19 @@ export function build(size, fn, {normal = 0, rough = true, alpha = false, wrap =
     hgt[i] = o[3] ?? 0;
     const r = (o[4] ?? .5) * 255; rgh[i*4] = rgh[i*4+1] = rgh[i*4+2] = r; rgh[i*4+3] = 255;
   }
+  const nrm = normal ? heightToNormal(hgt, W, H, normal) : null;
+  // Worker path: hand back transferable pixel data, no DOM or three.js involved.
+  if (RAW) return {W, H, wrap, col, rgh: rough ? rgh : null, nrm};
   const out = {map: toTex(col, W, H, true, wrap)};
   if (rough) out.rough = toTex(rgh, W, H, false, wrap);
-  if (normal) out.normal = toTex(heightToNormal(hgt, W, H, normal), W, H, false, wrap);
+  if (nrm) out.normal = toTex(nrm, W, H, false, wrap);
+  if (key) TEXCACHE.set(key, out);
+  return out;
+}
+function fromRaster(r){
+  const out = {map: toTex(r.col, r.W, r.H, true, r.wrap)};
+  if (r.rgh) out.rough = toTex(r.rgh, r.W, r.H, false, r.wrap);
+  if (r.nrm) out.normal = toTex(r.nrm, r.W, r.H, false, r.wrap);
   return out;
 }
 function heightToNormal(h, W, H, k){
@@ -52,9 +79,9 @@ function toTex(data, W, H, srgb, wrap){
   return canvasTex(c, srgb, wrap);
 }
 export function canvasTex(c, srgb = true, wrap = true){
-  const t = new THREE.CanvasTexture(c);
-  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
-  if (wrap) t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  const t = new T.CanvasTexture(c);
+  if (srgb) t.colorSpace = T.SRGBColorSpace;
+  if (wrap) t.wrapS = t.wrapT = T.RepeatWrapping;
   t.anisotropy = 8; t.needsUpdate = true;
   return t;
 }
@@ -276,7 +303,7 @@ export function arrowsTex(){
     g.strokeStyle = 'rgba(46,230,214,.95)'; g.lineWidth = 10; g.lineCap = g.lineJoin = 'round';
     for (let i = 0; i < 2; i++){ const y = 50 + i * 128; g.beginPath(); g.moveTo(24, y + 30); g.lineTo(64, y - 10); g.lineTo(104, y + 30); g.stroke(); }
   });
-  const t = canvasTex(c); t.wrapS = THREE.ClampToEdgeWrapping; return t;
+  const t = canvasTex(c); t.wrapS = T.ClampToEdgeWrapping; return t;
 }
 export function textTex(text, color = '#ff4d5e', w = 256, h = 96, bg = 'rgba(0,0,0,0)'){
   return canvasTex(canvas2d(w, h, (g) => { g.fillStyle = bg; g.fillRect(0, 0, w, h); g.font = `800 ${h * .42}px Inter, Segoe UI, Arial`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = color; g.fillText(text, w / 2, h / 2); }), true, false);
@@ -338,4 +365,84 @@ export function crackCard(){
     [.1, .2, .3, .5, .7, 1, 1.5, 2, 2.5, 3, 4, 5].forEach((mm, i) => { const x = 24 + i * 40; g.fillRect(x, 20, Math.max(1, mm * 2.2), 70); g.fillText(mm, x - 4, 120); });
     g.font = '700 14px Arial'; g.fillText('CRACK WIDTH  mm', 24, 148);
   }), true, false);
+}
+
+/* ---------------- worker-backed prewarming ---------------- */
+// The builders below do all the per-pixel work (about a second on a fast desktop and
+// several times that on a phone). prewarm() runs them inside a worker so the main
+// thread stays free, and buildHouse() then finds the pixels already waiting and only
+// has to upload them. If the worker is unavailable or fails for any reason the cache
+// simply stays empty and every builder computes synchronously, exactly as before.
+function memo(name, fn){
+  return function(...args){ CURKEY = keyOf(name, args); try { return fn.apply(null, args); } finally { CURKEY = null; } };
+}
+marbleTiles = memo('marbleTiles', marbleTiles);
+woodPlanks = memo('woodPlanks', woodPlanks);
+plainTiles = memo('plainTiles', plainTiles);
+wallTiles = memo('wallTiles', wallTiles);
+paint = memo('paint', paint);
+fabric = memo('fabric', fabric);
+granite = memo('granite', granite);
+veneer = memo('veneer', veneer);
+rugTex = memo('rugTex', rugTex);
+dampDecal = memo('dampDecal', dampDecal);
+scorch = memo('scorch', scorch);
+wetStain = memo('wetStain', wetStain);
+blob = memo('blob', blob);
+
+export const RASTERISED = {marbleTiles, woodPlanks, plainTiles, wallTiles, paint, fabric, granite, veneer, rugTex, dampDecal, scorch, wetStain, blob};
+
+// Must mirror the calls buildHouse() makes. A mismatch is harmless: that texture is
+// simply built on the main thread as before.
+const PREWARM = [
+  ['paint', [512]],
+  ['marbleTiles', [0xece5d8, 4, 768]],
+  ['woodPlanks', [768]],
+  ['plainTiles', [{base: 0x9a9d9a, nx: 2, ny: 2, rough: .7, speck: .05, grout: 0x7d7f7c}]],
+  ['plainTiles', [{base: 0x9c9c98, nx: 2, ny: 2, rough: .45, speck: .08, grout: 0x7c7c78}]],
+  ['plainTiles', [{base: 0xa86a4d, nx: 2, ny: 2, rough: .85, speck: .1, grout: 0x7a5442, var: .08}]],
+  ['plainTiles', [{base: 0xc4bcae, nx: 2, ny: 2, rough: .7, grout: 0xa39a8a}]],
+  ['wallTiles', [{base: 0xdcdedb, cols: 2, rows: 1, grout: 0xc4c4bd}]],
+  ['wallTiles', [{base: 0x7f9c8f, cols: 4, rows: 8, stagger: true, grout: 0xe6e3dc, rough: .1}]],
+  ['dampDecal', [640]],
+  ['dampDecal', [384]],
+  ['granite', [512]],
+  ['veneer', [512, [.72, .55, .38]]],
+  ['veneer', [512, [.42, .28, .18]]],
+  ['rugTex', []],
+  ['fabric', [256]],
+  ['blob', [256, 3]],
+  ['blob', [256, 7]],
+  ['blob', [256, 11]],
+  ['scorch', [256]],
+  ['scorch', [128]],
+  ['wetStain', [256]],
+  ['wetStain', []],
+];
+
+export function prewarm(timeoutMs = 10000){
+  return new Promise(resolve => {
+    let w = null, url = null, left = PREWARM.length, settled = false;
+    const finish = () => {
+      if (settled) return; settled = true;
+      clearTimeout(timer);
+      try { if (w) w.terminate(); } catch (e){}
+      try { if (url) URL.revokeObjectURL(url); } catch (e){}
+      resolve();
+    };
+    const timer = setTimeout(finish, timeoutMs);
+    try {
+      const src = typeof document !== 'undefined' && document.getElementById('tex-worker');
+      if (!src || typeof Worker === 'undefined' || typeof Blob === 'undefined') return finish();
+      url = URL.createObjectURL(new Blob([src.textContent], {type: 'text/javascript'}));
+      w = new Worker(url);
+      w.onerror = finish;
+      w.onmessage = e => {
+        const d = e.data;
+        if (d && d.key && d.raster) RAWCACHE.set(d.key, d.raster);
+        if (--left <= 0) finish();
+      };
+      w.postMessage({scale: TEX_SCALE, jobs: PREWARM.map(([name, args]) => ({key: keyOf(name, args), name, args}))});
+    } catch (e){ finish(); }
+  });
 }

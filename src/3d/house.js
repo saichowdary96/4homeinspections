@@ -1,6 +1,15 @@
 /* The apartment: architecture, furnishing, defects (bad / fixed / thermal states) */
 import * as THREE from 'three';
 import * as TX from './tex.js';
+// tex.js has no static three.js import so it can also run inside the texture worker.
+// Pass the four symbols it needs, not the namespace object: handing esbuild the whole
+// namespace as a value defeats tree-shaking and adds ~150kb of three.js to the bundle.
+TX.setThree({
+  CanvasTexture: THREE.CanvasTexture,
+  SRGBColorSpace: THREE.SRGBColorSpace,
+  RepeatWrapping: THREE.RepeatWrapping,
+  ClampToEdgeWrapping: THREE.ClampToEdgeWrapping,
+});
 import {std, phys, box, rbox, cyl, sph, lathe, tube, plane, group, mesh, decalMat} from './models.js';
 
 export const H = 2.7, T = 0.14;

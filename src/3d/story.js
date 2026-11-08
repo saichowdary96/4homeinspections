@@ -3,14 +3,20 @@ import { createEngine } from './engine.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 
+// Phones, tablets (incl. iPadOS which reports as Mac) and low-memory devices get the
+// lighter render path. Exported so the texture prewarm uses the same texture scale the
+// engine will — if the two disagreed, the prewarmed pixels would be the wrong size.
+export function isLowEnd(){
+  const touch = navigator.maxTouchPoints > 1 || /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
+  return !!(touch || Math.min(innerWidth, innerHeight) < 600 || (navigator.deviceMemory && navigator.deviceMemory < 4));
+}
+
 export function initStory(){
   const stage = $('#stage'), canvas = $('#scene'), loader = $('#loader');
   let E;
   try {
     const t = document.createElement('canvas'); if (!(t.getContext('webgl2') || t.getContext('webgl'))) throw new Error('no webgl');
-    // phones, tablets (incl. iPadOS which reports as Mac) and low-memory devices get the lighter render path
-    const touch = navigator.maxTouchPoints > 1 || /Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent);
-    E = createEngine(canvas, {low: touch || Math.min(innerWidth, innerHeight) < 600 || (navigator.deviceMemory && navigator.deviceMemory < 4)});
+    E = createEngine(canvas, {low: isLowEnd()});
   } catch (e){ console.warn(e); loader.classList.add('gone'); return null; }
   loader.classList.add('gone');
   E.on('lost', () => { loader.innerHTML = '<span>The 3D view was paused by your device.</span><button class="btn btn-primary btn-sm" onclick="location.reload()">Reload</button>'; loader.classList.remove('gone'); });
