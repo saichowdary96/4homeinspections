@@ -8,7 +8,10 @@
   # Rebuild from src/ so the deploy always matches the sources. The committed
   # site/index.html is used as a fallback if the bundle step cannot run, so a
   # deploy never fails on a dependency hiccup.
-  command = "npm run build || echo 'Falling back to the committed site/index.html'"
+  #
+  # The output is also mirrored into out/ so that a site still configured with
+  # the old Next.js publish directory finds the same files and deploys cleanly.
+  command = "npm run build || echo 'Falling back to the committed site/index.html'; mkdir -p out && cp -R site/. out/"
   publish = "site"
 
 [build.environment]
