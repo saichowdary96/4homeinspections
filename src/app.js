@@ -44,25 +44,6 @@ $$('.rv').forEach(el => onView(el, x => x.classList.add('in')));
 const nav = $('#nav'), prog = $('#progress');
 addEventListener('scroll', () => { nav.classList.toggle('scrolled', scrollY > 30); prog.style.width = (scrollY / (document.documentElement.scrollHeight - innerHeight) * 100) + '%'; }, {passive: true});
 
-/* ---------- always-on contact dock: pick which of the two numbers to use ---------- */
-(function(){
-  const dock = $('#ctc'); if (!dock) return;
-  const rows = $$('.ctc-row', dock);
-  const close = except => rows.forEach(r => { if (r === except) return; r.classList.remove('open'); $('.ctc-btn', r).setAttribute('aria-expanded', 'false'); });
-  rows.forEach(row => {
-    const btn = $('.ctc-btn', row);
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const open = !row.classList.contains('open');
-      close(row); row.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
-    });
-  });
-  addEventListener('click', e => { if (!dock.contains(e.target)) close(null); });
-  addEventListener('keydown', e => { if (e.key === 'Escape') close(null); });
-  // a chosen number closes the dock behind it
-  $$('.ctc-menu a', dock).forEach(a => a.addEventListener('click', () => close(null)));
-})();
-
 /* ---------- auto-hiding chrome: out of the way while reading, back on scroll-up ---------- */
 (function(){
   let lastY = scrollY;
@@ -74,10 +55,17 @@ function renderPlan(){
   const p = planCalc(PLAN);
   const val = {fee: inr(p.fee), hi: lakh(p.hi), lo: lakh(p.lo), defects: p.defects, hours: p.hours, label: p.label, payer: p.payer, caughtVal: p.caughtVal, caughtNote: p.caughtNote, payerLong: p.payerLong};
   $$('[data-plan]').forEach(el => { const v = val[el.dataset.plan]; if (v !== undefined && el.textContent !== String(v)){ el.textContent = v; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); } });
+  // keep the hidden fields in step so the submitted lead carries the chosen plan
+  const pf = $('#bookForm [name=plan]'); if (pf) pf.value = p.label;
+  const ff = $('#bookForm [name=fee]'); if (ff) ff.value = inr(p.fee);
 }
-[['#planType', 'type', v => v], ['#planBhk', 'bhk', v => +v]].forEach(([sel, k, f]) => $(sel).addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return; $$('button', $(sel)).forEach(x => x.classList.toggle('on', x === b)); PLAN[k] = f(b.dataset.v); renderPlan();
-}));
+// the plan pickers are optional: the page still prices itself from the PLAN default without them
+[['#planType', 'type', v => v], ['#planBhk', 'bhk', v => +v]].forEach(([sel, k, f]) => {
+  const seg = $(sel); if (!seg) return;
+  seg.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return; $$('button', seg).forEach(x => x.classList.toggle('on', x === b)); PLAN[k] = f(b.dataset.v); renderPlan();
+  });
+});
 renderPlan();
 
 /* ---------- the tour: one stop per swipe / scroll / arrow key, with an exit at any time ---------- */
@@ -238,14 +226,20 @@ $$('a[href="#story"]').forEach(a => a.addEventListener('click', e => { e.prevent
 /* ---------- sticky booking bar: only after the experience, never over the visuals ---------- */
 (function(){
   const bar = $('#stickyCta'), book = $('#book'), story = $('#story'), quote = $('#quote');
-  const vis = el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; };
+  const vis = el => { if (!el) return false; const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; };
   const upd = () => { const st = story.getBoundingClientRect();
     bar.classList.toggle('show', st.bottom < innerHeight * .4 && !vis(book) && !vis(quote)); };
   addEventListener('scroll', upd, {passive: true}); upd();
 })();
 
 /* ---------- forms ---------- */
-$$('.pick').forEach(p => p.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $$('button', p).forEach(x => x.classList.toggle('on', x === b)); }));
+$$('.pick').forEach(p => p.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  $$('button', p).forEach(x => x.classList.toggle('on', x === b));
+  // mirror the choice into a real field so it reaches Formspree
+  const form = p.closest('form'), hidden = form && $(`input[type=hidden][name="${p.dataset.name}"]`, form);
+  if (hidden) hidden.value = b.textContent.trim();
+}));
 const dateIn = $('#bookForm [name=date]'); dateIn.min = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
 function validate(form){
   let ok = true;
@@ -253,20 +247,48 @@ function validate(form){
   return ok;
 }
 const picked = (form, name) => { const b = $(`.pick[data-name="${name}"] .on`, form); return b ? b.textContent : ''; };
-// NOTE: forms are front-end only. Connect to your CRM / booking backend before going live.
+
+/* Posts to the endpoint in the form's own action attribute (Formspree), so the
+   markup stays the single source of truth. Asking for JSON keeps the visitor on
+   the page; without it Formspree would redirect away from the success state. */
+async function sendForm(form){
+  const res = await fetch(form.action, {method: 'POST', body: new FormData(form), headers: {Accept: 'application/json'}});
+  if (res.ok) return;
+  let detail = '';
+  try { const j = await res.json(); detail = (j.errors || []).map(x => x.message).join(', '); } catch (e){}
+  throw new Error(detail || `We couldn’t send that (error ${res.status}).`);
+}
+function showErr(form, msg){
+  let el = $('.form-err', form);
+  if (!el){ el = document.createElement('p'); el.className = 'form-err'; form.appendChild(el); }
+  el.textContent = msg + ' Please try again, or call us on +91 70751 50809.';
+}
+async function submitting(form, run){
+  const btn = $('[type=submit]', form), was = btn.innerHTML;
+  const err = $('.form-err', form); if (err) err.remove();
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try { await sendForm(form); run(); }
+  catch (e){ btn.disabled = false; btn.innerHTML = was; showErr(form, e.message); }
+}
+
 $('#bookForm').addEventListener('submit', e => {
-  e.preventDefault(); const f = e.target; if (!validate(f)) return;
-  const d = new FormData(f), p = planCalc(PLAN), ref = 'HL-' + Math.floor(100000 + Math.random() * 900000);
-  const when = d.get('date') ? ' on ' + new Date(d.get('date')).toLocaleDateString('en-IN', {weekday: 'short', day: 'numeric', month: 'short'}) : '';
-  $('#bookCard').innerHTML = `<div class="success"><div class="tick">${icon('check')}</div><h3 style="font-size:26px">You’re booked in, ${d.get('name').split(' ')[0]}.</h3>
-    <p style="color:var(--muted);margin:10px auto 22px;max-width:420px">${p.label} in ${d.get('city')}${when} · ${inr(p.fee)}. We’ll call ${d.get('phone')} to confirm your slot.</p>
-    <span class="chip">Reference ${ref}</span><p class="fine" style="margin-top:20px">Tip: keep your floor plan handy for the visit.</p></div>`;
+  e.preventDefault(); const f = e.currentTarget; if (!validate(f)) return;
+  submitting(f, () => {
+    const d = new FormData(f), p = planCalc(PLAN), ref = 'HL-' + Math.floor(100000 + Math.random() * 900000);
+    const when = d.get('date') ? ' on ' + new Date(d.get('date')).toLocaleDateString('en-IN', {weekday: 'short', day: 'numeric', month: 'short'}) : '';
+    $('#bookCard').innerHTML = `<div class="success"><div class="tick">${icon('check')}</div><h3 style="font-size:26px">You’re booked in, ${d.get('name').split(' ')[0]}.</h3>
+      <p style="color:var(--muted);margin:10px auto 22px;max-width:420px">${p.label} in ${d.get('city')}${when} · ${inr(p.fee)}. We’ll call ${d.get('phone')} to confirm your slot.</p>
+      <span class="chip">Reference ${ref}</span><p class="fine" style="margin-top:20px">Tip: keep your floor plan handy for the visit.</p></div>`;
+  });
 });
 const modal = $('#consult');
 $$('[data-consult]').forEach(b => b.addEventListener('click', () => { modal.classList.add('open'); setTimeout(() => $('#consultForm [name=name]')?.focus(), 200); }));
 modal.addEventListener('click', e => { if (e.target === modal || e.target.closest('[data-close]')) modal.classList.remove('open'); });
 addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
 $('#consultForm').addEventListener('submit', e => {
-  e.preventDefault(); const f = e.target; if (!validate(f)) return; const d = new FormData(f);
-  $('#consultBody').innerHTML = `<div class="success" style="padding:20px 0 0"><div class="tick">${icon('phone')}</div><h3 style="font-size:24px">We’ll call you, ${d.get('name').split(' ')[0]}.</h3><p style="color:var(--muted);margin-top:10px">An inspector will ring ${d.get('phone')} this ${picked(f, 'time').toLowerCase()}. No obligation.</p><button class="btn btn-primary" style="margin-top:22px" data-close>Done</button></div>`;
+  e.preventDefault(); const f = e.currentTarget; if (!validate(f)) return;
+  submitting(f, () => {
+    const d = new FormData(f);
+    $('#consultBody').innerHTML = `<div class="success" style="padding:20px 0 0"><div class="tick">${icon('phone')}</div><h3 style="font-size:24px">We’ll call you, ${d.get('name').split(' ')[0]}.</h3><p style="color:var(--muted);margin-top:10px">An inspector will ring ${d.get('phone')} this ${picked(f, 'time').toLowerCase()}. No obligation.</p><button class="btn btn-primary" style="margin-top:22px" data-close>Done</button></div>`;
+  });
 });

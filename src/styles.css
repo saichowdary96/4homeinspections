@@ -31,7 +31,8 @@ section{position:relative;padding:120px 0}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
 .eyebrow::before{content:"";width:22px;height:1px;background:currentColor}
 h1,h2,h3,h4{line-height:1.08;letter-spacing:-.02em;font-weight:700}
-h2.title{font-size:clamp(32px,4.6vw,56px);margin:14px 0 18px}
+/* the page's h1 now lives on the "what you get" heading, so it shares .title */
+h1.title,h2.title{font-size:clamp(32px,4.6vw,56px);margin:14px 0 18px}
 .lead{color:var(--muted);font-size:clamp(16px,1.4vw,19px);max-width:640px}
 .grad{background:linear-gradient(100deg,var(--accent),var(--accent2) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-bottom:56px}
@@ -348,6 +349,25 @@ footer{padding:60px 0 40px;border-top:1px solid var(--line);color:var(--muted);f
 .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
 .foot-links{display:flex;gap:22px;flex-wrap:wrap}
 .foot-links a:hover{color:var(--text)}
+.consult-tel{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--muted);margin-bottom:20px;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:rgba(46,230,214,.05)}
+.consult-tel>span[data-i]{color:var(--accent);flex:none}
+.consult-tel svg{width:16px;height:16px}
+.consult-tel a{color:var(--text);font-weight:700;white-space:nowrap}
+.form-err{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.45;color:#ffc2c9;background:rgba(255,93,108,.1);border:1px solid rgba(255,93,108,.35)}
+/* the instruments grid */
+.tools-head{justify-content:center;text-align:center;margin-bottom:40px}
+.tools-head .lead{margin:0 auto}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tool-card{padding:24px;display:flex;flex-direction:column}
+.tc-ic{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:13px;background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c);margin-bottom:18px}
+.tc-ic svg{width:23px;height:23px}
+.tool-card h4{font-size:17px;margin-bottom:9px}
+.tool-card p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:16px;flex:1}
+.tc-find{display:inline-flex;align-items:flex-start;gap:9px;font-size:13px;font-weight:600;line-height:1.4;padding-top:14px;border-top:1px solid var(--line)}
+.tc-find>span[data-i]{color:var(--c);flex:none;margin-top:-1px}
+.tc-find svg{width:16px;height:16px}
+@media (max-width:1080px){.tools-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:680px){.tools-grid{grid-template-columns:1fr}.tool-card{padding:20px}}
 .foot-contact h5{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);margin-bottom:14px}
 .fc-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;line-height:1.5}
 .fc-ic{color:var(--accent);flex:none;margin-top:1px}
@@ -642,7 +662,6 @@ b.warn,.warn{color:var(--warn)!important}b.good,.good{color:var(--good)!importan
 .fab{display:none!important}
 /* always-on WhatsApp / call dock. --ctc-b lets the sticky bar push it up on phones. */
 .ctc{position:fixed;z-index:96;right:max(16px,env(safe-area-inset-right));bottom:calc(var(--ctc-b,18px) + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:flex-end;gap:12px;transition:bottom .45s cubic-bezier(.2,.8,.2,1),opacity .35s,transform .35s}
-.ctc-row{display:flex;align-items:center;gap:10px}
 .ctc-btn{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#07130c;box-shadow:0 10px 26px rgba(0,0,0,.45);transition:transform .2s,box-shadow .2s}
 .ctc-btn svg{width:26px;height:26px;display:block}
 .ctc-btn.wa{background:#25d366}
@@ -650,10 +669,6 @@ b.warn,.warn{color:var(--warn)!important}b.good,.good{color:var(--good)!importan
 .ctc-btn.call svg{width:23px;height:23px}
 .ctc-btn:hover{transform:scale(1.07);box-shadow:0 14px 32px rgba(0,0,0,.55)}
 .ctc-btn:active{transform:scale(.96)}
-.ctc-menu{display:flex;flex-direction:column;gap:2px;padding:6px;border-radius:14px;background:rgba(9,14,26,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line2);box-shadow:var(--shadow);opacity:0;transform:translateX(10px) scale(.96);transform-origin:100% 50%;pointer-events:none;transition:opacity .22s,transform .22s;white-space:nowrap}
-.ctc-row.open .ctc-menu{opacity:1;transform:none;pointer-events:auto}
-.ctc-menu a{padding:9px 14px;border-radius:9px;font-size:14px;font-weight:600;color:var(--text);transition:background .2s}
-.ctc-menu a:hover{background:rgba(255,255,255,.08)}
 /* the tour owns the bottom-right corner, so step aside exactly like the nav does */
 body.immersive .ctc{opacity:0;transform:translateY(24px) scale(.9);pointer-events:none}
 @media (max-width:1080px){
@@ -744,7 +759,7 @@ input,select,textarea{font-size:16px} /* prevents iOS zoom-on-focus */
   .tally{gap:6px}
   .sdots{display:none}
   section{padding:64px 0}
-  h2.title{font-size:28px}
+  h1.title,h2.title{font-size:28px}
 }
 /* tablets in portrait (iPad mini/Air, Android tablets) */
 @media (min-width:600px) and (max-width:860px){
