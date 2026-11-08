@@ -17,7 +17,7 @@
   <div class="nav-links" id="navLinks">
     <a href="#story">What we find</a>
     <a href="#value">What you get</a>
-    <a href="#plan">Price</a>
+    <a href="#tools">Our tools</a>
     <a href="#faq">FAQ</a>
   </div>
   <div class="nav-cta">
@@ -58,7 +58,7 @@
     <div class="sec-head">
       <div class="rv">
         <span class="eyebrow">What you get</span>
-        <h2 class="title">One visit. One fixed fee. <span class="grad">Everything checked.</span></h2>
+        <h1 class="title">One visit. One fixed fee. <span class="grad">Everything checked.</span></h1>
       </div>
       <div class="price-pill rv d1"><small data-plan="label">2 BHK · New flat</small><b data-plan="fee">₹5,500</b><span>all-inclusive</span></div>
     </div>
@@ -85,27 +85,75 @@
 </section>
 
 <!-- 3. THE DETAILS (after the experience): personalised price + intro -->
-<header class="hero" id="plan">
-  <div class="wrap hero-grid">
-    <div class="rv">
-      <span class="eyebrow">Home inspection before you take possession</span>
-      <h1>Find what’s wrong with your new home <span class="grad">before you take the keys.</span></h1>
-      <p class="lead">We test 500+ points in one visit with thermal cameras, moisture meters and electrical testers — then give you a photo report your builder has to act on.</p>
-      <div class="quote card" id="quote">
-        <div class="q-row"><span class="q-lab">I’m getting</span>
-          <div class="seg" id="planType"><button data-v="new" class="on">A new flat</button><button data-v="resale">A resale home</button><button data-v="living">I already live there</button></div></div>
-        <div class="q-row"><span class="q-lab">Size</span>
-          <div class="seg" id="planBhk"><button data-v="1">1 BHK</button><button data-v="2" class="on">2 BHK</button><button data-v="3">3 BHK</button><button data-v="4">4+ BHK</button></div></div>
-        <div class="q-out">
-          <div><small>Your inspection</small><b data-plan="fee">₹5,500</b><span><span data-plan="hours">3–4</span> hrs on site · report in 48 hrs</span></div>
-          <div><small>Repairs it can save you</small><b class="warn">up to <span data-plan="hi">₹3.2L</span></b><span>typically <span data-plan="defects">51</span> defects found</span></div>
-        </div>
-        <p class="q-payer"><span data-i="shield"></span><span data-plan="payer">Defects found before possession are fixed by your builder — at no cost to you.</span></p>
-        <div class="q-cta"><a href="#book" class="btn btn-primary">Book for <span data-plan="fee">₹5,500</span><span data-i="arrow"></span></a><a href="#story" class="btn btn-ghost">Replay the walkthrough</a></div>
+<!-- The instruments. Every tool here is the one that actually found the matching
+     defect in the walkthrough above, so the two sections stay in step. -->
+<section id="tools">
+  <div class="wrap">
+    <div class="sec-head tools-head">
+      <div class="rv">
+        <span class="eyebrow">What we bring</span>
+        <h2 class="title">The instruments that <span class="grad">find what eyes can’t.</span></h2>
+        <p class="lead">Every defect in the walkthrough was found with one of these — nothing drilled, nothing broken. Calibrated instruments, read by an inspector who knows what the numbers mean.</p>
       </div>
     </div>
+    <div class="tools-grid">
+      <article class="card tool-card rv" style="--c:var(--accent2)">
+        <span class="tc-ic" data-i="thermal"></span>
+        <h4>Thermal imaging camera</h4>
+        <p>Reads surface temperature rather than looks. Escaping water cools the material around it, so a leak sealed inside a wall shows up as a cold trail through plaster and tile.</p>
+        <span class="tc-find"><span data-i="check"></span>Hidden pipe leak behind the toilet</span>
+      </article>
+      <article class="card tool-card rv d1" style="--c:var(--accent)">
+        <span class="tc-ic" data-i="drop"></span>
+        <h4>Moisture meter</h4>
+        <p>Measures how much water is held inside the plaster, not just on the surface. Fresh paint hides a damp patch; the meter still reads the wet wall underneath.</p>
+        <span class="tc-find"><span data-i="check"></span>Damp patch &amp; mould on the outer wall</span>
+      </article>
+      <article class="card tool-card rv d2" style="--c:var(--warn)">
+        <span class="tc-ic" data-i="bolt"></span>
+        <h4>Socket &amp; earth tester</h4>
+        <p>Checks live, neutral and earth at every outlet. A socket with no earth powers your appliances perfectly — right up until a fault makes the casing live.</p>
+        <span class="tc-find"><span data-i="check"></span>Scorched socket with no earthing</span>
+      </article>
+      <article class="card tool-card rv" style="--c:var(--good)">
+        <span class="tc-ic" data-i="tile"></span>
+        <h4>Tile tapping rod</h4>
+        <p>A tile bedded on full adhesive rings solid; one laid over an air pocket answers with a dull hollow tock. Every floor tile gets tapped, and each hollow one is marked.</p>
+        <span class="tc-find"><span data-i="check"></span>Hollow &amp; cracked floor tiles</span>
+      </article>
+      <article class="card tool-card rv d1" style="--c:var(--bad)">
+        <span class="tc-ic" data-i="gauge"></span>
+        <h4>Crack width gauge</h4>
+        <p>Puts a number on a crack. Width is what separates harmless shrinkage from movement that needs a structural engineer — and it decides whether filler is honest or a cover-up.</p>
+        <span class="tc-find"><span data-i="check"></span>Crack running from the door corner</span>
+      </article>
+      <article class="card tool-card rv d2" style="--c:var(--accent2)">
+        <span class="tc-ic" data-i="scan"></span>
+        <h4>Laser level &amp; straight-edge</h4>
+        <p>Projects a true horizontal and vertical to compare against. Floors that fall the wrong way, walls out of plumb and tile lippage are all obvious against a dead-straight line.</p>
+        <span class="tc-find"><span data-i="check"></span>Water pools away from the drain</span>
+      </article>
+      <article class="card tool-card rv" style="--c:var(--accent)">
+        <span class="tc-ic" data-i="eye"></span>
+        <h4>Borescope camera</h4>
+        <p>A lens on a flexible probe that sees inside ducts, shafts and the cavity under a sink unit — the places a leak starts, without opening anything up.</p>
+        <span class="tc-find"><span data-i="check"></span>Leak under the kitchen sink</span>
+      </article>
+      <article class="card tool-card rv d1" style="--c:var(--warn)">
+        <span class="tc-ic" data-i="bath"></span>
+        <h4>Water spray &amp; flood test</h4>
+        <p>Recreates a monsoon on demand. Water is sprayed at the outside of a frame, or ponded on a wet-area floor, to prove the seal and the fall before the rain does.</p>
+        <span class="tc-find"><span data-i="check"></span>Leaking window frame</span>
+      </article>
+      <article class="card tool-card rv d2" style="--c:var(--bad)">
+        <span class="tc-ic" data-i="shield"></span>
+        <h4>Clamp meter &amp; RCD tester</h4>
+        <p>Measures the current a circuit really draws and times how fast the trip actually cuts power. An overloaded board runs hot long before it fails.</p>
+        <span class="tc-find"><span data-i="check"></span>Overheating distribution board</span>
+      </article>
+    </div>
   </div>
-</header>
+</section>
 
 <div class="strip">
   <div class="wrap strip-row">
@@ -131,13 +179,17 @@
       <p class="fine" style="margin-top:16px">Prefer to talk first? <button class="link-btn" data-consult>Get a free call back</button></p>
     </div>
     <div class="card form rv d1" id="bookCard">
-      <form id="bookForm" novalidate>
+      <form id="bookForm" action="https://formspree.io/f/maqgkanb" method="POST" novalidate>
         <div class="form-grid">
           <div class="f"><label>Name</label><input name="name" required placeholder="Your name" autocomplete="name"></div>
           <div class="f"><label>Mobile number</label><input name="phone" required inputmode="tel" placeholder="10-digit mobile" autocomplete="tel"></div>
           <div class="f"><label>City</label><select name="city" required><option value="">Select city</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option><option>Mumbai</option><option>Pune</option><option>Delhi NCR</option><option>Kolkata</option><option>Ahmedabad</option><option>Other</option></select></div>
           <div class="f"><label>Preferred date <span class="fine">(optional)</span></label><input type="date" name="date"></div>
         </div>
+        <input type="hidden" name="_subject" value="Inspection booking — 4 Home Inspections">
+        <input type="hidden" name="form_type" value="Inspection booking">
+        <input type="hidden" name="plan" value="">
+        <input type="hidden" name="fee" value="">
         <button class="btn btn-primary" style="margin-top:20px;width:100%;justify-content:center" type="submit">Book my inspection · <span data-plan="fee">₹5,500</span></button>
         <p class="fine" style="text-align:center">No payment now. We call you to confirm the slot.</p>
       </form>
@@ -163,7 +215,7 @@
     <div class="foot-contact">
       <h5>Contact us</h5>
       <p class="fc-row"><span class="fc-ic" data-i="pin"></span><span>1st Floor, Arrna Heights, <br>NFC Road, Moula Ali, Hyderabad.</span></p>
-      <p class="fc-row"><span class="fc-ic" data-i="phone"></span><span class="fc-tels"><a href="tel:+917075150809">+91 70751 50809</a><a href="tel:+918121660345">+91 81216 60345</a></span></p>
+      <p class="fc-row"><span class="fc-ic" data-i="phone"></span><a href="tel:+917075150809">+91 70751 50809</a></p>
       <p class="fc-row"><span class="fc-ic" data-i="whatsapp"></span><a href="https://wa.me/917075150809?text=Hi%204%20Home%20Inspections%2C%20I%27d%20like%20to%20book%20a%20home%20inspection." target="_blank" rel="noopener">Chat on WhatsApp</a></p>
     </div>
     <div class="foot-links"><a href="#story">What we find</a><a href="#value">What you get</a><a href="#book">Book</a><a href="#faq">FAQ</a></div>
@@ -178,20 +230,8 @@
 
 <!-- Always-on contact. Sits after .sticky-cta so CSS can lift it clear of that bar. -->
 <div class="ctc" id="ctc">
-  <div class="ctc-row">
-    <div class="ctc-menu" id="waMenu" role="group" aria-label="WhatsApp numbers">
-      <a href="https://wa.me/917075150809?text=Hi%204%20Home%20Inspections%2C%20I%27d%20like%20to%20book%20a%20home%20inspection." target="_blank" rel="noopener">+91 70751 50809</a>
-      <a href="https://wa.me/918121660345?text=Hi%204%20Home%20Inspections%2C%20I%27d%20like%20to%20book%20a%20home%20inspection." target="_blank" rel="noopener">+91 81216 60345</a>
-    </div>
-    <button class="ctc-btn wa" id="waBtn" aria-expanded="false" aria-controls="waMenu" aria-label="Chat on WhatsApp"><span data-i="whatsapp"></span></button>
-  </div>
-  <div class="ctc-row">
-    <div class="ctc-menu" id="telMenu" role="group" aria-label="Phone numbers">
-      <a href="tel:+917075150809">+91 70751 50809</a>
-      <a href="tel:+918121660345">+91 81216 60345</a>
-    </div>
-    <button class="ctc-btn call" id="telBtn" aria-expanded="false" aria-controls="telMenu" aria-label="Call us"><span data-i="phone"></span></button>
-  </div>
+  <a class="ctc-btn wa" href="https://wa.me/917075150809?text=Hi%204%20Home%20Inspections%2C%20I%27d%20like%20to%20book%20a%20home%20inspection." target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><span data-i="whatsapp"></span></a>
+  <a class="ctc-btn call" href="tel:+917075150809" aria-label="Call +91 70751 50809"><span data-i="phone"></span></a>
 </div>
 
 <div class="modal" id="consult">
@@ -200,11 +240,15 @@
     <div id="consultBody">
       <span class="eyebrow">Free call back</span>
       <h3 style="font-size:26px;margin:12px 0 8px">Talk to an inspector — free.</h3>
-      <p style="color:var(--muted);font-size:15px;margin-bottom:20px">15 minutes. We’ll tell you what to check, what your builder must fix, and whether you need a full inspection.</p>
-      <form id="consultForm" novalidate>
+      <p style="color:var(--muted);font-size:15px;margin-bottom:16px">15 minutes. We’ll tell you what to check, what your builder must fix, and whether you need a full inspection.</p>
+      <p class="consult-tel"><span data-i="phone"></span><span>Rather not wait? Call us on <a href="tel:+917075150809">+91 70751 50809</a></span></p>
+      <form id="consultForm" action="https://formspree.io/f/maqgkanb" method="POST" novalidate>
         <div class="f" style="margin-bottom:12px"><label>Name</label><input name="name" required placeholder="Your name"></div>
         <div class="f" style="margin-bottom:12px"><label>Mobile number</label><input name="phone" required inputmode="tel" placeholder="10-digit mobile"></div>
         <div class="f" style="margin-bottom:18px"><label>Best time to call</label><div class="pick" data-name="time"><button type="button" class="on">Morning</button><button type="button">Afternoon</button><button type="button">Evening</button></div></div>
+        <input type="hidden" name="time" value="Morning">
+        <input type="hidden" name="_subject" value="Free call back request — 4 Home Inspections">
+        <input type="hidden" name="form_type" value="Free call back">
         <button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Call me back</button>
       </form>
     </div>
