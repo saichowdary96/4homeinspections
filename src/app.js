@@ -234,7 +234,28 @@ function validate(form){
   return ok;
 }
 const picked = (form, name) => { const b = $(`.pick[data-name="${name}"] .on`, form); return b ? b.textContent : ''; };
-// NOTE: forms are front-end only. Connect to your CRM / booking backend before going live.
+
+const FORMSPREE_URL = 'https://formspree.io/f/maqgkanb';
+
+async function sendToFormspree(form, extra = {}) {
+  const data = new FormData(form);
+
+  Object.entries(extra).forEach(([key, value]) => {
+    data.set(key, String(value));
+  });
+
+  const response = await fetch(FORMSPREE_URL, {
+    method: 'POST',
+    body: data,
+    headers: { Accept: 'application/json' }
+  });
+
+  if (!response.ok) {
+    throw new Error('Form submission failed');
+  }
+
+  return response.json();
+}
 $('#bookForm').addEventListener('submit', e => {
   e.preventDefault(); const f = e.target; if (!validate(f)) return;
   const d = new FormData(f), p = planCalc(PLAN), ref = 'HL-' + Math.floor(100000 + Math.random() * 900000);
@@ -244,6 +265,105 @@ $('#bookForm').addEventListener('submit', e => {
     <span class="chip">Reference ${ref}</span><p class="fine" style="margin-top:20px">Tip: keep your floor plan handy for the visit.</p></div>`;
 });
 const modal = $('#consult');
+
+$$('[data-consult]').forEach(b => b.addEventListener('click', () => {
+  modal.classList.add('open');
+  setTimeout(() => $('#consultForm [name=name]')?.focus(), 200);
+}));
+
+modal.addEventListener('click', e => {
+  if (e.target === modal || e.target.closest('[data-close]')) {
+    modal.classList.remove('open');
+  }
+});
+
+addEventListener('keydown', e => {
+  if (e.key === 'Escape') modal.classList.remove('open');
+});
+
+
+$('#consultForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const f = e.currentTarget;
+  if (!validate(f)) return;
+
+  const button = f.querySelector('[type="submit"]');
+  if (button) button.disabled = true;
+
+  const d = new FormData(f);
+
+  try {
+    await sendToFormspree(f, {
+      form_type: 'Free Call Back Request'
+    });
+
+    $('#consultBody').innerHTML = `
+      <div class="success" style="padding:20px 0">
+        <div class="tick">${icon('phone')}</div>
+        <h3 style="font-size:24px">
+          We'll call you, ${String(d.get('name') || '').split(' ')[0]}!
+        </h3>
+        <p style="color:var(--muted);margin-top:10px">
+          Your callback request has been received.
+          Our team will contact you shortly.
+        </p>
+      </div>`;
+  } catch (error) {
+    console.error('Formspree callback error:', error);
+    alert('Unable to submit your callback request. Please try again.');
+  } finally {
+    if (button && button.isConnected) button.disabled = false;
+  }
+});
+
+  e.preventDefault();
+  const f = e.currentTarget;
+  if (!validate(f)) return;
+
+  const button = f.querySelector('[type="submit"]');
+  if (button) button.disabled = true;
+
+  const d = new FormData(f);
+  const p = planCalc(PLAN);
+
+  try {
+    await sendToFormspree(f, {
+      form_type: 'Home Inspection Booking',
+      inspection_plan: PLAN,
+      estimated_price: p.fee
+    });
+
+    const ref = 'HL-' + Math.floor(100000 + Math.random() * 900000);
+    const when = d.get('date')
+      ? ' on ' + new Date(d.get('date')).toLocaleDateString('en-IN', {
+          weekday: 'short',
+          day: 'numeric',
+          month: 'short'
+        })
+      : '';
+
+    $('#bookCard').innerHTML = `
+      <div class="success">
+        <div class="tick">${icon('check')}</div>
+        <h3 style="font-size:26px">Request received, ${String(d.get('name') || '').split(' ')[0]}!</h3>
+        <p style="color:var(--muted);margin:10px auto 22px;max-width:420px">
+          ${p.label} in ${d.get('city') || ''}${when}.
+          We'll call ${d.get('phone') || ''} to confirm your inspection.
+        </p>
+        <span class="chip">Reference ${ref}</span>
+        <p class="fine" style="margin-top:20px">
+          Your request has been submitted successfully.
+        </p>
+      </div>`;
+  } catch (error) {
+    console.error('Formspree booking error:', error);
+    alert('Unable to submit your booking. Please try again.');
+  } finally {
+    if (button && button.isConnected) button.disabled = false;
+  }
+});
+
 $$('[data-consult]').forEach(b => b.addEventListener('click', () => { modal.classList.add('open'); setTimeout(() => $('#consultForm [name=name]')?.focus(), 200); }));
 modal.addEventListener('click', e => { if (e.target === modal || e.target.closest('[data-close]')) modal.classList.remove('open'); });
 addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
