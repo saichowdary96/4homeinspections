@@ -7,6 +7,10 @@ ROOT=..
 [ -d "$ROOT/node_modules/three" ] || { echo "Run 'npm install' in the repo root first."; exit 1; }
 mkdir -p "$ROOT/.build"
 ( cd "$ROOT" && npx esbuild src/3d/main.js --bundle --format=iife --minify --target=es2020 --log-level=warning --outfile=.build/bundle.js )
+# The texture worker is bundled separately: it imports tex.js only, so three.js stays
+# out of it. It is inlined below as inert text and started from a Blob URL.
+( cd "$ROOT" && npx esbuild src/3d/texworker.js --bundle --format=iife --minify --target=es2020 --log-level=warning --outfile=.build/texworker.js )
+grep -q '</script' "$ROOT/.build/texworker.js" && { echo "worker bundle contains </script, cannot inline"; exit 1; }
 OUT=$ROOT/site/index.html
 mkdir -p "$ROOT/site"
 {
@@ -19,6 +23,7 @@ echo '<meta name="theme-color" content="#070b14">'
 echo '<style>'; cat styles.css; echo '</style></head><body>'
 cat body.html
 echo '<script>'; cat data.js; echo; cat illustrations.js; echo '</script>'
+echo '<script id="tex-worker" type="text/plain">'; cat "$ROOT/.build/texworker.js"; echo '</script>'
 echo '<script>'; cat "$ROOT/.build/bundle.js"; echo '</script>'
 echo '<script>'; cat app.js; echo '</script>'
 echo '</body></html>'

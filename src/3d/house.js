@@ -1,6 +1,15 @@
 /* The apartment: architecture, furnishing, defects (bad / fixed / thermal states) */
 import * as THREE from 'three';
 import * as TX from './tex.js';
+// tex.js has no static three.js import so it can also run inside the texture worker.
+// Pass the four symbols it needs, not the namespace object: handing esbuild the whole
+// namespace as a value defeats tree-shaking and adds ~150kb of three.js to the bundle.
+TX.setThree({
+  CanvasTexture: THREE.CanvasTexture,
+  SRGBColorSpace: THREE.SRGBColorSpace,
+  RepeatWrapping: THREE.RepeatWrapping,
+  ClampToEdgeWrapping: THREE.ClampToEdgeWrapping,
+});
 import {std, phys, box, rbox, cyl, sph, lathe, tube, plane, group, mesh, decalMat} from './models.js';
 
 export const H = 2.7, T = 0.14;
@@ -159,6 +168,9 @@ export function buildHouse(){
     return m;
   }
   const blobT = TX.blob(256, 3), blobT2 = TX.blob(256, 7);
+  // scorch() and wetStain() are pure hash noise with fixed seeds, so the same size
+  // always produces the same image. Build each once and share it between defects.
+  const scorchT = TX.scorch(256).map, wetStainT = TX.wetStain(256).map;
   function thermPlane(parent, w, h, x, y, z, ry, t, rx = 0, map = blobT){
     const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({map, color: new THREE.Color().setScalar(t), transparent: true, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -6}));
     m.position.set(x, y, z); m.rotation.set(rx, ry, 0); m.userData.thermalOnly = true; parent.add(m); return m;
@@ -444,7 +456,7 @@ export function buildHouse(){
     tube([[sx + .1, sy + .01, sz - .02], [sx + .25, .05, sz - .2], [sx + .3, .02, sz - .5], [-5.5, .02, 3.1]], .006, mBlack, d.bad, 24, 6);
     tube([[sx + .1, sy - .02, sz + .02], [sx + .22, .03, sz + .1], [sx + .5, .015, sz + .2]], .006, mBlack, d.bad, 24, 6);
     tube([[sx + .1, sy + .02, sz + .02], [sx + .2, .2, sz - .1], [-5.6, .55, 3.25]], .005, std(0xeeeeee), d.bad, 24, 6);
-    decal(plane(.45, .5, decalMat(TX.scorch(256).map, {roughness: 1}), sx + .017, sy + .1, sz, 0, PI / 2, d.bad)).userData.grow = {sx: 2.1, sy: 2.3};
+    decal(plane(.45, .5, decalMat(scorchT, {roughness: 1}), sx + .017, sy + .1, sz, 0, PI / 2, d.bad)).userData.grow = {sx: 2.1, sy: 2.3};
     const sp = new THREE.BufferGeometry(); const N = 40, arr = new Float32Array(N * 3); sp.setAttribute('position', new THREE.BufferAttribute(arr, 3));
     const sparks = new THREE.Points(sp, new THREE.PointsMaterial({color: 0xffc04a, size: .012, transparent: true, toneMapped: false})); sparks.userData.decal = true; d.bad.add(sparks);
     refs.sparks = {pts: sparks, origin: [sx + .1, sy, sz], N};
@@ -459,8 +471,13 @@ export function buildHouse(){
   {
     const d = D('damp'); d.focus = [-5.9, .9, -2.6];
     const dd = TX.dampDecal(640);
-    decal(plane(3.2, 2.0, decalMat(dd.map, {normalMap: dd.normal, normalScale: new THREE.Vector2(1.2, 1.2), roughness: .95}), -5.9285, 1.0, -2.65, 0, PI / 2, d.bad)).userData.grow = {sx: 1.12, sy: 1.3, anchor: 'bottom', h: 2.0};
-    thermPlane(d.therm, 3.9, 2.6, -5.926, 1.1, -2.6, PI / 2, .08);
+    // Layers on this wall are spaced apart in x: the wall face sits at -5.93 and the
+    // moisture overlay in engine.js at -5.904. Anything closer than ~2mm z-fights in
+    // the ambient-occlusion depth pass, which shimmers across the whole wall.
+    decal(plane(3.2, 2.0, decalMat(dd.map, {normalMap: dd.normal, normalScale: new THREE.Vector2(1.2, 1.2), roughness: .95}), -5.9265, 1.0, -2.65, 0, PI / 2, d.bad)).userData.grow = {sx: 1.12, sy: 1.3, anchor: 'bottom', h: 2.0};
+    // Sized to stay inside the room: the old 3.9x2.6 plane cut through the back wall
+    // at z -4.43 and dropped below the floor, flickering along both intersections.
+    thermPlane(d.therm, 3.7, 2.4, -5.9145, 1.2, -2.55, PI / 2, .08);
     d.wall = {x: -5.93, z1: -4.4, z2: -.75, y1: 0, y2: 2.4};
   }
   // 5. WINDOW leak (bedroom back wall window x -4.6..-2.8, sill .9)
@@ -501,7 +518,7 @@ export function buildHouse(){
     d.doorPivot = pv;
     // swollen edge + stain on door
     const sw = rbox(.69, .09, .05, .02, std(0x9a8566, {roughness: .95}), .335, .1, .006, pv); d.swollen = sw;
-    const stn = decal(plane(.66, .3, decalMat(TX.wetStain(256).map, {color: 0x8a6a3a, opacity: .85}), .335, .3, .0115, 0, 0, pv));
+    const stn = decal(plane(.66, .3, decalMat(wetStainT, {color: 0x8a6a3a, opacity: .85}), .335, .3, .0115, 0, 0, pv));
     d.onState = bad => { sw.visible = bad; stn.visible = bad; };
     // cabinet interior (hollow carcass)
     const mIn = std(0xd9d3c7, {roughness: .7});
@@ -526,7 +543,7 @@ export function buildHouse(){
     const cv = new THREE.Group(); cv.position.set(dbx - .23, dby, dbz + .095); house.add(cv);
     box(.46, .56, .012, std(0xe4e7ea, {roughness: .4, metalness: .3}), .23, 0, 0, cv); box(.02, .06, .02, mBlack, .42, .26, .012, cv);
     d.cover = cv;
-    decal(plane(.5, .5, decalMat(TX.scorch(256).map, {roughness: 1}), dbx + .07, dby + .72, dbz + .002, 0, 0, d.bad));
+    decal(plane(.5, .5, decalMat(scorchT, {roughness: 1}), dbx + .07, dby + .72, dbz + .002, 0, 0, d.bad));
     tube([[dbx + .02, dby + .02, dbz + .1], [dbx + .05, dby - .2, dbz + .14], [dbx - .03, dby - .35, dbz + .1]], .004, std(0xd0332a), d.bad, 16, 6);
     tube([[dbx + .06, dby + .02, dbz + .1], [dbx + .12, dby - .15, dbz + .16], [dbx + .1, dby - .3, dbz + .12]], .004, std(0x2a5bd0), d.bad, 16, 6);
     thermPlane(d.therm, .28, .28, dbx + .07, dby + .34, dbz + .13, 0, 1.0);
@@ -537,7 +554,7 @@ export function buildHouse(){
     const d = D('balcony'); d.focus = [-3.2, .05, 4.72];
     puddle(-3.3, 4.78, 1.3, .24, 21, .006, mWater, d.bad);
     puddle(-3.3, 4.36, .7, .1, 5, .004, mWater, d.bad);
-    const wetT = TX.wetStain(256).map; decal(plane(1.6, .5, decalMat(wetT, {opacity: .5, roughness: .3}), -3.3, .0035, 4.2, -PI / 2, 0, d.bad));
+    const wetT = wetStainT; decal(plane(1.6, .5, decalMat(wetT, {opacity: .5, roughness: .3}), -3.3, .0035, 4.2, -PI / 2, 0, d.bad));
     puddle(-.8, 6.12, .22, .14, 8, .006, mWater, d.good);
     thermPlane(d.therm, 3.0, .8, -3.3, .009, 4.7, 0, .16, -PI / 2);
     const flood = puddle(-3.3, 5.2, 2.2, .7, 17, .008, mWater, house); flood.visible = false; d.flood = flood; d.floodFrom = [-3.3, 6.0];
