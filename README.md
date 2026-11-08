@@ -1,4 +1,4 @@
-# HomeLens — immersive 3D home-inspection website
+# 4 Home Inspections — immersive 3D home-inspection website
 
 A single, self-contained web page: a swipeable 3D walkthrough of a flat that
 shows seven hidden defects (Problem → Proof → Fixed), followed by a value

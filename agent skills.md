@@ -14,9 +14,10 @@
 | Item | State |
 |---|---|
 | Deliverable | **One self-contained file: `site/index.html`** (~800 KB; no external requests, works offline / from `file://`) |
-| Brand | "HomeLens" — placeholder name, kept by decision |
+| Brand | **"4 Home Inspections"** — the real company. The 4C logo is traced from the supplied artwork and recoloured to the dark palette (`#brandmark` symbol in `body.html`). Renamed from the "HomeLens" placeholder in Nov 2026. |
 | Market | India: ₹, BHK, "possession", builder must fix defects before handover |
-| Repo history | This folder used to hold a Next.js "4HomeInspections" site (commit `2618951`). The owner chose to **replace it entirely** with HomeLens (Nov 2026). An intermediate attempt merged the tour into that Next.js site; it was discarded as too complex. |
+| Repo history | This folder used to hold a Next.js "4HomeInspections" site (commit `2618951`). The owner chose to **replace it entirely** with this one (Nov 2026). An intermediate attempt merged the tour into that Next.js site; it was discarded as too complex. |
+| Contact | Numbers 7075150809 / 8121660345 appear in the footer and the floating `.ctc` dock. Address: 1st Floor, Arrna Heights, NFC Road, Moula Ali, Hyderabad. |
 | Pricing, savings, stats, FAQ answers | **Placeholders** — replace before launch |
 | Forms (`#bookForm`, `#consultForm`) | Front-end only (validation + thank-you state). Need a backend/CRM. |
 | Tested | Desktop Chrome-class rendering via preview screenshots (phone portrait 390×844, landscape 844×390, desktop 1440×900), script parse checks, jsdom smoke tests. **Not yet tested on real iOS/Android devices.** |

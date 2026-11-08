@@ -44,6 +44,25 @@ $$('.rv').forEach(el => onView(el, x => x.classList.add('in')));
 const nav = $('#nav'), prog = $('#progress');
 addEventListener('scroll', () => { nav.classList.toggle('scrolled', scrollY > 30); prog.style.width = (scrollY / (document.documentElement.scrollHeight - innerHeight) * 100) + '%'; }, {passive: true});
 
+/* ---------- always-on contact dock: pick which of the two numbers to use ---------- */
+(function(){
+  const dock = $('#ctc'); if (!dock) return;
+  const rows = $$('.ctc-row', dock);
+  const close = except => rows.forEach(r => { if (r === except) return; r.classList.remove('open'); $('.ctc-btn', r).setAttribute('aria-expanded', 'false'); });
+  rows.forEach(row => {
+    const btn = $('.ctc-btn', row);
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = !row.classList.contains('open');
+      close(row); row.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+  addEventListener('click', e => { if (!dock.contains(e.target)) close(null); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(null); });
+  // a chosen number closes the dock behind it
+  $$('.ctc-menu a', dock).forEach(a => a.addEventListener('click', () => close(null)));
+})();
+
 /* ---------- auto-hiding chrome: out of the way while reading, back on scroll-up ---------- */
 (function(){
   let lastY = scrollY;
@@ -78,7 +97,7 @@ renderPlan();
   const vib = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e){} };
 
   function captionHTML(k, ph, later){
-    if (k === 'intro') return `<span class="k" style="--c:var(--accent)">HomeLens · virtual home inspection</span>
+    if (k === 'intro') return `<span class="k" style="--c:var(--accent)">4 Home Inspections · virtual home inspection</span>
       <h2>${kin('This flat passed its handover check.')}</h2><p>Swipe up to walk through what our inspector found.</p><div class="cue"><i></i>Swipe up</div>`;
     if (k === 'outro') return `<span class="k" style="--c:var(--accent)">Inspection complete</span>
       <h2>${kin('10 hidden defects in a “perfect” flat.')}</h2>
