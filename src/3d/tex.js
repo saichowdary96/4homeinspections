@@ -91,8 +91,10 @@ export function woodPlanks(size = 1024){
     const ring = fbm(lu * 2 + tone * 9, lv * 3, 4, 64, id) * 9 + lv * 5;
     const grain = Math.pow(.5 + .5 * Math.sin(ring * 6.283), 3);
     const fine = fbm(lu * 40, lv * 2, 2, 512, id + 3);
-    const base = [.66, .48, .32].map((c, i) => c * (0.82 + tone * .3) * (1 - grain * .22 - fine * .12));
-    return [...base, .6 + grain * .2 - fine * .2, .42 + grain * .12];
+    // scalars instead of .map()+spread: those allocated three arrays per pixel,
+    // 1.8M for a 768px texture. Same operands, same left-to-right order.
+    const t1 = 0.82 + tone * .3, t2 = 1 - grain * .22 - fine * .12;
+    return [.66 * t1 * t2, .48 * t1 * t2, .32 * t1 * t2, .6 + grain * .2 - fine * .2, .42 + grain * .12];
   }, {normal: 2});
 }
 // square matte/gloss tiles (bathroom floor, kitchen, balcony, wall)
@@ -121,7 +123,9 @@ export function wallTiles({base = 0xf2f2ef, cols = 2, rows = 1, size = 512, grou
   }, {normal: 3});
 }
 export function paint(size = 512){
-  return build(size, (u, v) => { const n = fbm(u * 16, v * 16, 4, 16, 2), m = fbm(u * 90, v * 90, 2, 90, 9); const k = .97 + n * .04; return [k, k, k, n * .5 + m * .5, .82 + m * .1]; }, {normal: .9});
+  // rough: false here and below — only tm() and granite sample a roughnessMap, so for
+  // every other surface the roughness canvas was built, uploaded and never read.
+  return build(size, (u, v) => { const n = fbm(u * 16, v * 16, 4, 16, 2), m = fbm(u * 90, v * 90, 2, 90, 9); const k = .97 + n * .04; return [k, k, k, n * .5 + m * .5, .82 + m * .1]; }, {normal: .9, rough: false});
 }
 export function fabric(size = 256){
   return build(size, (u, v) => {
@@ -129,7 +133,7 @@ export function fabric(size = 256){
     const w = (a * (b > 0 ? 1 : -1)) * .5 + .5, fuzz = fbm(u * 64, v * 64, 2, 64, 4);
     const k = .82 + w * .12 + fuzz * .12;
     return [k, k, k, w * .7 + fuzz * .3, .95];
-  }, {normal: 1.6});
+  }, {normal: 1.6, rough: false});
 }
 export function granite(size = 512){
   return build(size, (u, v) => {
@@ -145,7 +149,7 @@ export function veneer(size = 512, tone = [.62, .45, .30]){
     const g = Math.pow(.5 + .5 * Math.sin(ring * 6.283), 2.4), f = fbm(u * 80, v * 4, 2, 80, 2);
     const k = 1 - g * .2 - f * .1;
     return [tone[0] * k, tone[1] * k, tone[2] * k, g * .4 + f * .3, .5];
-  }, {normal: 1});
+  }, {normal: 1, rough: false});
 }
 export function rugTex(size = 512){
   return build(size, (u, v) => {
@@ -154,7 +158,7 @@ export function rugTex(size = 512){
     if (e < .05) c = [.22, .24, .28]; else if (e < .065) c = [.80, .74, .62];
     else { const p = Math.sin(u * 40) * Math.sin(v * 40); if (p > .6) c = [.48, .51, .55]; }
     const k = .85 + fuzz * .3; return [c[0] * k, c[1] * k, c[2] * k, fuzz, 1];
-  }, {normal: 1.2, wrap: false});
+  }, {rough: false, wrap: false}); // the rug material samples only .map
 }
 
 /* ---------------- defect decals ---------------- */
@@ -167,21 +171,24 @@ export function dampDecal(size = 768){
     const edgeFade = smooth(0, .12, Math.min(u, 1 - u)) * smooth(0, .08, 1 - v + .08);
     let a = smooth(.30, .40, m) * edgeFade;
     if (a <= .001) return [0, 0, 0, 0, .8, 0];
-    let c = [.52, .44, .30], al = a * .55, hgt = 0, rgh = .85;
+    // scalar channels instead of c.map(): the arrays cost about five allocations per
+    // pixel and dominated this texture. Same operands, same order, same output.
+    let c0 = .52, c1 = .44, c2 = .30, al = a * .55, hgt = 0, rgh = .85;
     const tide = Math.pow(Math.abs(Math.sin(m * 52)), 10) * smooth(.3, .5, m) * (1 - smooth(.5, .8, m));
-    c = c.map((x, i) => x - tide * [.18, .16, .12][i]); al = Math.min(1, al + tide * .45);
-    const inner = smooth(.45, .75, m); c = c.map((x, i) => mix(x, [.40, .37, .30][i], inner * .6)); al = Math.min(.85, al + inner * .2);
+    c0 = c0 - tide * .18; c1 = c1 - tide * .16; c2 = c2 - tide * .12; al = Math.min(1, al + tide * .45);
+    const inner = smooth(.45, .75, m), iq = inner * .6;
+    c0 = mix(c0, .40, iq); c1 = mix(c1, .37, iq); c2 = mix(c2, .30, iq); al = Math.min(.85, al + inner * .2);
     // efflorescence (salt) near the floor
     const salt = fbm(u * 26, v * 26, 3, 256, 5);
-    if (v > .72 && salt > .58){ const s = smooth(.58, .7, salt) * smooth(.72, .9, v); c = c.map(x => mix(x, .95, s)); al = Math.max(al, s * .9); hgt += s * .5; }
+    if (v > .72 && salt > .58){ const s = smooth(.58, .7, salt) * smooth(.72, .9, v); c0 = mix(c0, .95, s); c1 = mix(c1, .95, s); c2 = mix(c2, .95, s); al = Math.max(al, s * .9); hgt += s * .5; }
     // peeling paint flakes
     const peel = fbm(u * 9 + 3, v * 9, 3, 64, 12);
-    if (m > .48 && peel > .62){ const p = smooth(.62, .66, peel); c = c.map((x, i) => mix(x, [.86, .80, .68][i], p)); al = Math.max(al, p); hgt += p * (1 - smooth(.64, .7, peel)) * 2 + p * .4; rgh = .95; }
+    if (m > .48 && peel > .62){ const p = smooth(.62, .66, peel); c0 = mix(c0, .86, p); c1 = mix(c1, .80, p); c2 = mix(c2, .68, p); al = Math.max(al, p); hgt += p * (1 - smooth(.64, .7, peel)) * 2 + p * .4; rgh = .95; }
     // mould colonies
     const mo = fbm(u * 7 + 9, v * 7 + 2, 3, 64, 40), dots = vnoise(u * 160, v * 160, 160, 3);
-    if (mo > .55 && dots > .72 && m > .42){ const d = smooth(.72, .82, dots) * smooth(.55, .65, mo); c = c.map((x, i) => mix(x, [.08, .1, .07][i], d)); al = Math.max(al, d); }
-    return [c[0], c[1], c[2], hgt, rgh, al];
-  }, {normal: 4, alpha: true, wrap: false});
+    if (mo > .55 && dots > .72 && m > .42){ const d = smooth(.72, .82, dots) * smooth(.55, .65, mo); c0 = mix(c0, .08, d); c1 = mix(c1, .1, d); c2 = mix(c2, .07, d); al = Math.max(al, d); }
+    return [c0, c1, c2, hgt, rgh, al];
+  }, {normal: 4, alpha: true, rough: false, wrap: false});
 }
 // crack with chipped paint edge (drawn on canvas), returns {map, normal}
 export function crackDecal(size = 512, start = [.92, .95], dir = -2.35, len = 70, w0 = 5){

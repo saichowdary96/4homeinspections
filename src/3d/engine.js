@@ -88,6 +88,19 @@ export function createEngine(canvas, {low = false} = {}){
   gtao.updatePdMaterial({lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12});
   gtao.blendIntensity = .95; gtao.enabled = !low && hf;
   composer.addPass(gtao);
+  // GTAO re-renders the scene with MeshNormalMaterial, which ignores every material's
+  // depthWrite, polygonOffset and transparency. Decals sit a few millimetres off the
+  // surface they cover, so they z-fight in the AO depth buffer and the occlusion
+  // shimmers as the camera drifts — worst on the large damp-wall decal. A surface that
+  // does not write depth in the main render should not write it here either.
+  {
+    const hidden = [], base = gtao.renderOverride.bind(gtao);
+    const noDepth = m => Array.isArray(m) ? m.length > 0 && m.every(x => x && x.depthWrite === false) : !!m && m.depthWrite === false;
+    gtao.renderOverride = (rend, mat, target, cc, ca) => {
+      scene.traverse(o => { if (o.visible && o.isMesh && noDepth(o.material)){ o.visible = false; hidden.push(o); } });
+      try { base(rend, mat, target, cc, ca); } finally { for (const o of hidden) o.visible = true; hidden.length = 0; }
+    };
+  }
   const thermalPass = new ShaderPass(ThermalShader); thermalPass.enabled = false; composer.addPass(thermalPass);
   const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .16, .45, .93); bloom.enabled = !low; composer.addPass(bloom);
   const cine = new ShaderPass({uniforms: {tDiffuse: {value: null}, uTime: {value: 0}, uVig: {value: 1.0}},
@@ -168,7 +181,9 @@ export function createEngine(canvas, {low = false} = {}){
   const mTex = new THREE.CanvasTexture(mCan); mTex.colorSpace = THREE.SRGBColorSpace;
   const dw = D.damp.wall, mW = dw.z2 - dw.z1, mH = dw.y2 - dw.y1;
   const mPlane = new THREE.Mesh(new THREE.PlaneGeometry(mW, mH), new THREE.MeshBasicMaterial({map: mTex, transparent: true, opacity: .8, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -8}));
-  mPlane.position.set(dw.x + .004, (dw.y1 + dw.y2) / 2, (dw.z1 + dw.z2) / 2); mPlane.rotation.y = Math.PI / 2; mPlane.visible = false; scene.add(mPlane);
+  // +.026 keeps this clear of the damp decal and the thermal plane on the same wall;
+  // at +.004 it was exactly coplanar with the thermal plane and the two flickered.
+  mPlane.position.set(dw.x + .026, (dw.y1 + dw.y2) / 2, (dw.z1 + dw.z2) / 2); mPlane.rotation.y = Math.PI / 2; mPlane.visible = false; scene.add(mPlane);
   const moisture = (z, y) => state.damp === 'bad'
     ? 9 + 31 * Math.exp(-(((z + 2.6) / 1.35) ** 2) - (((y - .35) / .95) ** 2)) + 16 * Math.exp(-(((z + 3.9) / .55) ** 2) - (((y - 1.55) / .7) ** 2)) + 10 * Math.exp(-(((z + 1.3) / .5) ** 2) - (((y - .2) / .5) ** 2))
     : 9 + Math.sin(z * 3) * .6;
