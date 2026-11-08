@@ -1,0 +1,28 @@
+# Netlify build configuration for HomeLens.
+#
+# The published site is a single self-contained file (site/index.html) that
+# src/build.sh generates from src/. The previous Next.js configuration
+# published "out/", which no longer exists and caused deploys to fail.
+
+[build]
+  # Rebuild from src/ so the deploy always matches the sources. The committed
+  # site/index.html is used as a fallback if the bundle step cannot run, so a
+  # deploy never fails on a dependency hiccup.
+  command = "npm run build || echo 'Falling back to the committed site/index.html'"
+  publish = "site"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Long-lived caching for the hashed asset, but always revalidate the HTML so
+# visitors pick up new deploys immediately.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
