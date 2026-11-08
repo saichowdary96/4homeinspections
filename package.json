@@ -1,32 +1,14 @@
 {
-  "name": "homeguard-inspections",
+  "name": "homelens",
   "version": "1.0.0",
   "private": true,
-  "description": "Premium, production-ready home inspection website built with Next.js.",
+  "description": "HomeLens — immersive 3D home-inspection website (single self-contained HTML file).",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "export": "next build",
-    "serve:static": "npx serve@latest out"
-  },
-  "dependencies": {
-    "framer-motion": "^11.3.0",
-    "lucide-react": "^0.417.0",
-    "next": "^16.2.9",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "build": "bash src/build.sh",
+    "serve": "python3 -m http.server 8000 --bind 0.0.0.0 --directory site"
   },
   "devDependencies": {
-    "@types/node": "^20.14.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.19",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "^16.2.9",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.6",
-    "typescript": "^5.5.3"
+    "esbuild": "^0.24.0",
+    "three": "0.160.0"
   }
 }

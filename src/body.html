@@ -1,0 +1,176 @@
+<div id="progress"></div>
+
+<nav class="nav" id="nav">
+  <a href="#story" class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#03141a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><circle cx="12" cy="14" r="3.5"/><path d="M14.6 16.6L17 19"/></svg></span>HomeLens</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#story">What we find</a>
+    <a href="#value">What you get</a>
+    <a href="#plan">Price</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-cta">
+    <button class="btn btn-ghost btn-sm" data-consult><span data-i="phone"></span>Free call back</button>
+    <a href="#book" class="btn btn-primary btn-sm">Book · <span data-plan="fee">₹5,500</span></a>
+  </div>
+</nav>
+
+<!-- 1. THE EXPERIENCE FIRST: a full-screen, swipeable inspection (one stop per swipe) -->
+<section id="story" class="xp" aria-label="Virtual home inspection">
+  <div class="stage" id="stage">
+    <canvas id="scene"></canvas>
+    <img id="xfade" class="xfade" alt="">
+    <svg viewBox="0 0 800 600" id="stageFallback" class="fallback stage-fb" preserveAspectRatio="xMidYMid slice"></svg>
+    <div class="hotspots" id="hotspots"></div>
+    <div class="hud" id="hud"></div>
+    <div class="xp-top">
+      <div class="sprog" id="sprog"></div>
+      <div class="xp-btns">
+        <button class="xp-ic" id="xpMotion" aria-label="Look around by tilting your phone" hidden><span data-i="rotate"></span></button>
+        <button class="xp-exit" id="xpExit" aria-label="Exit the tour"><span>Exit</span><span data-i="x"></span></button>
+      </div>
+    </div>
+    <div class="cap" id="cap"><div class="cap-in" id="capIn"></div></div>
+    <div class="xp-ctrl" id="xpCtrl">
+      <div class="phase-chips" id="chips"></div>
+      <button class="hold" id="hold"><span class="hold-ring"></span><span class="hold-t">Hold · see it in 3 years</span></button>
+    </div>
+    <button class="xp-next" id="xpNext" aria-label="Next"><span class="xp-next-t">Next</span><span data-i="arrow"></span></button>
+    <div class="loader" id="loader"><div class="spin"></div><span>Building the 3D home…</span></div>
+  </div>
+  <div class="xp-pages" id="steps"></div>
+</section>
+
+<!-- 2. VALUE: everything you get, on one screen -->
+<section id="value">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv">
+        <span class="eyebrow">What you get</span>
+        <h2 class="title">One visit. One fixed fee. <span class="grad">Everything checked.</span></h2>
+      </div>
+      <div class="price-pill rv d1"><small data-plan="label">2 BHK · New flat</small><b data-plan="fee">₹5,500</b><span>all-inclusive</span></div>
+    </div>
+    <div class="value-grid">
+      <div class="card vcol rv">
+        <h4><span data-i="clipboard"></span>What we check <small>500+ points</small></h4>
+        <ul class="checklist" id="checklist"></ul>
+      </div>
+      <div class="card vcol rv d1">
+        <h4><span data-i="calendar"></span>How it works</h4>
+        <ol class="howto">
+          <li><b>Book in 2 minutes</b><span>Pick a date. We confirm by phone and ask for your floor plan.</span></li>
+          <li><b>We inspect — <span data-plan="hours">3–4</span> hours</b><span>You don’t need to be there. Nothing is drilled or broken.</span></li>
+          <li><b>Report in 48 hours</b><span>Every defect photographed, located and rated. Hand it straight to your builder.</span></li>
+          <li><b>We re-check the fixes</b><span>A follow-up visit confirms the builder actually fixed everything.</span></li>
+        </ol>
+      </div>
+      <div class="card vcol rv d2">
+        <h4><span data-i="report"></span>Your report</h4>
+        <div class="report-mock flat" id="reportMock"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. THE DETAILS (after the experience): personalised price + intro -->
+<header class="hero" id="plan">
+  <div class="wrap hero-grid">
+    <div class="rv">
+      <span class="eyebrow">Home inspection before you take possession</span>
+      <h1>Find what’s wrong with your new home <span class="grad">before you take the keys.</span></h1>
+      <p class="lead">We test 500+ points in one visit with thermal cameras, moisture meters and electrical testers — then give you a photo report your builder has to act on.</p>
+      <div class="quote card" id="quote">
+        <div class="q-row"><span class="q-lab">I’m getting</span>
+          <div class="seg" id="planType"><button data-v="new" class="on">A new flat</button><button data-v="resale">A resale home</button><button data-v="living">I already live there</button></div></div>
+        <div class="q-row"><span class="q-lab">Size</span>
+          <div class="seg" id="planBhk"><button data-v="1">1 BHK</button><button data-v="2" class="on">2 BHK</button><button data-v="3">3 BHK</button><button data-v="4">4+ BHK</button></div></div>
+        <div class="q-out">
+          <div><small>Your inspection</small><b data-plan="fee">₹5,500</b><span><span data-plan="hours">3–4</span> hrs on site · report in 48 hrs</span></div>
+          <div><small>Repairs it can save you</small><b class="warn">up to <span data-plan="hi">₹3.2L</span></b><span>typically <span data-plan="defects">51</span> defects found</span></div>
+        </div>
+        <p class="q-payer"><span data-i="shield"></span><span data-plan="payer">Defects found before possession are fixed by your builder — at no cost to you.</span></p>
+        <div class="q-cta"><a href="#book" class="btn btn-primary">Book for <span data-plan="fee">₹5,500</span><span data-i="arrow"></span></a><a href="#story" class="btn btn-ghost">Replay the walkthrough</a></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="wrap strip-row">
+    <div class="strip-item"><span class="ic" data-i="thermal"></span><div><b>Sees inside walls</b><span>Thermal &amp; moisture imaging</span></div></div>
+    <div class="strip-item"><span class="ic" data-i="shield"></span><div><b>Nothing broken</b><span>Fully non-destructive</span></div></div>
+    <div class="strip-item"><span class="ic" data-i="report"></span><div><b>Builder-ready report</b><span>Every defect photographed</span></div></div>
+    <div class="strip-item"><span class="ic" data-i="repeat"></span><div><b>Re-check included</b><span>We verify the builder’s fixes</span></div></div>
+  </div>
+</div>
+
+<!-- 4. BOOK -->
+<section id="book">
+  <div class="wrap book">
+    <div class="card book-pitch rv">
+      <span class="eyebrow">Book your inspection</span>
+      <h2>Inspect before you sign the possession letter.</h2>
+      <div class="book-sum"><div><small>Your plan</small><b data-plan="label">2 BHK · New flat</b></div><div><small>Fee</small><b data-plan="fee">₹5,500</b></div></div>
+      <ul class="checks">
+        <li><span data-i="check"></span>Slots within 48 hours in most cities</li>
+        <li><span data-i="check"></span>Certified inspectors, calibrated instruments</li>
+        <li><span data-i="check"></span>Report in 48 hours, re-check included</li>
+      </ul>
+      <p class="fine" style="margin-top:16px">Prefer to talk first? <button class="link-btn" data-consult>Get a free call back</button></p>
+    </div>
+    <div class="card form rv d1" id="bookCard">
+      <form id="bookForm" novalidate>
+        <div class="form-grid">
+          <div class="f"><label>Name</label><input name="name" required placeholder="Your name" autocomplete="name"></div>
+          <div class="f"><label>Mobile number</label><input name="phone" required inputmode="tel" placeholder="10-digit mobile" autocomplete="tel"></div>
+          <div class="f"><label>City</label><select name="city" required><option value="">Select city</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option><option>Mumbai</option><option>Pune</option><option>Delhi NCR</option><option>Kolkata</option><option>Ahmedabad</option><option>Other</option></select></div>
+          <div class="f"><label>Preferred date <span class="fine">(optional)</span></label><input type="date" name="date"></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:20px;width:100%;justify-content:center" type="submit">Book my inspection · <span data-plan="fee">₹5,500</span></button>
+        <p class="fine" style="text-align:center">No payment now. We call you to confirm the slot.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head" style="justify-content:center;text-align:center">
+      <div class="rv"><span class="eyebrow">Quick answers</span><h2 class="title">Questions buyers ask us</h2></div>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a href="#story" class="logo" style="margin-bottom:10px"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#03141a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><circle cx="12" cy="14" r="3.5"/><path d="M14.6 16.6L17 19"/></svg></span>HomeLens</a>
+      <p style="max-width:340px">Independent, non-destructive home inspections for new and resale homes.</p>
+    </div>
+    <div class="foot-links"><a href="#story">What we find</a><a href="#value">What you get</a><a href="#book">Book</a><a href="#faq">FAQ</a></div>
+  </div>
+</footer>
+
+<!-- sticky booking bar -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sc-info"><b data-plan="label">2 BHK · New flat</b><span>Inspection <b data-plan="fee">₹5,500</b> · could save up to <b class="warn" data-plan="hi">₹3.2L</b></span></div>
+  <a href="#book" class="btn btn-primary btn-sm">Book now</a>
+</div>
+
+<div class="modal" id="consult">
+  <div class="box">
+    <button class="close" data-close aria-label="Close"><span data-i="x"></span></button>
+    <div id="consultBody">
+      <span class="eyebrow">Free call back</span>
+      <h3 style="font-size:26px;margin:12px 0 8px">Talk to an inspector — free.</h3>
+      <p style="color:var(--muted);font-size:15px;margin-bottom:20px">15 minutes. We’ll tell you what to check, what your builder must fix, and whether you need a full inspection.</p>
+      <form id="consultForm" novalidate>
+        <div class="f" style="margin-bottom:12px"><label>Name</label><input name="name" required placeholder="Your name"></div>
+        <div class="f" style="margin-bottom:12px"><label>Mobile number</label><input name="phone" required inputmode="tel" placeholder="10-digit mobile"></div>
+        <div class="f" style="margin-bottom:18px"><label>Best time to call</label><div class="pick" data-name="time"><button type="button" class="on">Morning</button><button type="button">Afternoon</button><button type="button">Evening</button></div></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Call me back</button>
+      </form>
+    </div>
+  </div>
+</div>
