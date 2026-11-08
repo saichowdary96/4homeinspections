@@ -1,8 +1,8 @@
 {
-  "name": "homelens",
+  "name": "4homeinspections",
   "version": "1.0.0",
   "private": true,
-  "description": "HomeLens — immersive 3D home-inspection website (single self-contained HTML file).",
+  "description": "4 Home Inspections — immersive 3D home-inspection website (single self-contained HTML file).",
   "scripts": {
     "build": "bash src/build.sh",
     "serve": "python3 -m http.server 8000 --bind 0.0.0.0 --directory site"

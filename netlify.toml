@@ -1,4 +1,4 @@
-# Netlify build configuration for HomeLens.
+# Netlify build configuration for the 4 Home Inspections site.
 #
 # The published site is a single self-contained file (site/index.html) that
 # src/build.sh generates from src/. The previous Next.js configuration

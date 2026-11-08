@@ -53,8 +53,9 @@ h2.title{font-size:clamp(32px,4.6vw,56px);margin:14px 0 18px}
 .nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;width:min(1240px,94vw);display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 20px;border-radius:999px;background:rgba(9,14,26,.6);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%);border:1px solid var(--line);transition:background .3s}
 .nav.scrolled{background:rgba(9,14,26,.88)}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.01em}
-.logo-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center}
-.logo-mark svg{width:18px;height:18px}
+.brand-defs{position:absolute;width:0;height:0;overflow:hidden}
+.logo-mark{width:34px;height:34px;display:grid;place-items:center;flex:none}
+.logo-mark svg{width:100%;height:100%;overflow:visible}
 .nav-links{display:flex;gap:4px}
 .nav-links a{padding:8px 14px;border-radius:999px;font-size:14px;color:var(--muted);transition:color .2s,background .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,.06)}
@@ -347,6 +348,13 @@ footer{padding:60px 0 40px;border-top:1px solid var(--line);color:var(--muted);f
 .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
 .foot-links{display:flex;gap:22px;flex-wrap:wrap}
 .foot-links a:hover{color:var(--text)}
+.foot-contact h5{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);margin-bottom:14px}
+.fc-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;line-height:1.5}
+.fc-ic{color:var(--accent);flex:none;margin-top:1px}
+.fc-ic svg{width:17px;height:17px;display:block}
+.fc-tels{display:flex;flex-direction:column}
+.foot-contact a{transition:color .2s}
+.foot-contact a:hover{color:var(--text)}
 .fab{position:fixed;right:16px;bottom:16px;z-index:90;display:none}
 
 /* reveal */
@@ -632,6 +640,22 @@ b.warn,.warn{color:var(--warn)!important}b.good,.good{color:var(--good)!importan
 .sc-info{display:flex;flex-direction:column;font-size:13px;color:var(--muted);line-height:1.3}
 .sc-info>b{color:var(--text);font-size:13.5px}
 .fab{display:none!important}
+/* always-on WhatsApp / call dock. --ctc-b lets the sticky bar push it up on phones. */
+.ctc{position:fixed;z-index:96;right:max(16px,env(safe-area-inset-right));bottom:calc(var(--ctc-b,18px) + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:flex-end;gap:12px;transition:bottom .45s cubic-bezier(.2,.8,.2,1),opacity .35s,transform .35s}
+.ctc-row{display:flex;align-items:center;gap:10px}
+.ctc-btn{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#07130c;box-shadow:0 10px 26px rgba(0,0,0,.45);transition:transform .2s,box-shadow .2s}
+.ctc-btn svg{width:26px;height:26px;display:block}
+.ctc-btn.wa{background:#25d366}
+.ctc-btn.call{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06202b}
+.ctc-btn.call svg{width:23px;height:23px}
+.ctc-btn:hover{transform:scale(1.07);box-shadow:0 14px 32px rgba(0,0,0,.55)}
+.ctc-btn:active{transform:scale(.96)}
+.ctc-menu{display:flex;flex-direction:column;gap:2px;padding:6px;border-radius:14px;background:rgba(9,14,26,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line2);box-shadow:var(--shadow);opacity:0;transform:translateX(10px) scale(.96);transform-origin:100% 50%;pointer-events:none;transition:opacity .22s,transform .22s;white-space:nowrap}
+.ctc-row.open .ctc-menu{opacity:1;transform:none;pointer-events:auto}
+.ctc-menu a{padding:9px 14px;border-radius:9px;font-size:14px;font-weight:600;color:var(--text);transition:background .2s}
+.ctc-menu a:hover{background:rgba(255,255,255,.08)}
+/* the tour owns the bottom-right corner, so step aside exactly like the nav does */
+body.immersive .ctc{opacity:0;transform:translateY(24px) scale(.9);pointer-events:none}
 @media (max-width:1080px){
   .value-grid{grid-template-columns:1fr}
   .hero-grid{gap:28px}
@@ -662,6 +686,10 @@ b.warn,.warn{color:var(--warn)!important}b.good,.good{color:var(--good)!importan
   .sticky-cta.show{transform:none}
   .sc-info span{font-size:12px}
   .tally{font-size:11.5px}
+  /* the booking bar spans the full width here, so lift the dock clear of it */
+  .sticky-cta.show ~ .ctc{--ctc-b:90px}
+  .ctc-btn{width:48px;height:48px}
+  .ctc-btn svg{width:24px;height:24px}
 }
 .q-out b span{font-size:inherit;color:inherit}
 /* keep each story card in view for its whole step */
@@ -702,6 +730,9 @@ input,select,textarea{font-size:16px} /* prevents iOS zoom-on-focus */
   .wrap{width:calc(100% - 28px)}
   .nav{padding:8px 8px 8px 14px}
   .logo{font-size:16px}.logo-mark{width:26px;height:26px}
+  /* "4 Home Inspections" + the booking button overflow the pill here, so the
+     nav keeps just the monogram. The footer still spells the name out. */
+  .nav .logo-t{display:none}
   .nav-cta .btn-primary{padding:9px 12px;font-size:13px}
   .quote{padding:14px}
   .q-out{grid-template-columns:1fr 1fr;gap:8px}
